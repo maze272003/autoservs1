@@ -18,5 +18,5 @@
 # /.vscode
 # /.zed
 
-# php artisan storage:link | for storage image command
-
+# for storage image command | php artisan storage:link
+# if you in counter bugs use the | composer update
