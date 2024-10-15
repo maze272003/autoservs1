@@ -17,3 +17,6 @@
 # /.idea
 # /.vscode
 # /.zed
+
+# php artisan storage:link | for storage image command
+
