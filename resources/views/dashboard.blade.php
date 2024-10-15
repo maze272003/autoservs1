@@ -29,6 +29,13 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
 </head>
+<style>
+ /* Add this CSS to your styles file, e.g., app.css */
+
+
+
+
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -85,7 +92,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
-                <img src="dist/img/autoservbg.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                <img src="dist/img/autoservbg.png" style="height: 40px;" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                     style="opacity: .8">
                 <span class="brand-text font-weight-light">AUTOSERV</span>
             </a>
@@ -94,13 +101,15 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="dist/img/deafault.jpg" class="img-circle elevation-2" alt="User Image">
+                        @if (Auth::user()->profile_image)
+                        <img src="{{ Storage::url(Auth::user()->profile_image) }}" style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
+                        @endif
                     </div>
                     <div class="info">
                         <a href="{{ route('profile.edit') }}" class="d-block">{{ Auth::user()->name }}</a>
                     </div>
                 </div>
-
+                
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"

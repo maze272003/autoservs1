@@ -18,15 +18,16 @@ return new class extends Migration
         $table->string('usertype')->default('user');
         $table->timestamp('email_verified_at')->nullable();
         $table->string('password');
-        // Add new nullable fields
         $table->string('address')->nullable();
         $table->string('zipcode', 10)->nullable();
         $table->string('contact_number')->nullable();
         $table->string('brgy')->nullable();
         $table->string('street')->nullable();
+        $table->string('profile_image')->nullable(); // Add this line for profile image
         $table->rememberToken();
         $table->timestamps();
     });
+    
 
     Schema::create('password_reset_tokens', function (Blueprint $table) {
         $table->string('email')->primary();
