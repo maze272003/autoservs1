@@ -29,13 +29,6 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
 </head>
-<style>
- /* Add this CSS to your styles file, e.g., app.css */
-
-
-
-
-</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
