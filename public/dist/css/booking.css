@@ -1,0 +1,21 @@
+.booking {
+    margin-left: 50px;
+}
+
+@media (max-width: 768px) {
+    .booking {
+        margin-left: 0;
+    }
+
+    .form-label {
+        font-size: 14px;
+    }
+
+    .form-control {
+        font-size: 14px;
+    }
+
+    .valid-feedback, .invalid-feedback {
+        font-size: 12px;
+    }
+}
