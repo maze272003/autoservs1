@@ -73,7 +73,8 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (Auth::user()->profile_image)
-                        <img src="{{ Storage::url(Auth::user()->profile_image) }}" style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
+                            <img src="{{ Storage::url(Auth::user()->profile_image) }}"
+                                style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
                         @endif
                     </div>
                     <div class="info">
@@ -142,55 +143,20 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>ChartJS</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">ChartJS</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.container-fluid -->
-            </section>
+
             <!-- Main content -->
             <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!-- DONUT CHART -->
-                            <div class="card card-danger">
-                                <div class="card-header">
-                                    <h3 class="card-title">Donut Chart</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="donutChart"
-                                        style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                                </div>
-                            </div>
-                            <!-- /.card -->
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+                            <h1 style="font-weight: bold; font-size: 3rem;">WELCOME ADMIN</h1>
                         </div>
-                        <!-- /.col (LEFT) -->
-                        <a href="{{ route('user.statistics') }}" class="btn btn-info">View User Statistics</a>
-
-                        <!-- /.col (RIGHT) -->
                     </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.container-fluid -->
+                    <!-- /.container-fluid -->
+                </section>
+
+
             </section>
             <!-- /.content -->
         </div>
@@ -219,45 +185,6 @@
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Prepare data from backend
-            const usersPerMonth = @json($usersPerMonth);
-
-            const labels = [];
-            const data = [];
-
-            usersPerMonth.forEach(function(item) {
-                // Assuming month is returned as number, convert it to month name
-                const monthName = new Date(2021, item.month - 1).toLocaleString('default', { month: 'long' });
-                labels.push(monthName);
-                data.push(item.count);
-            });
-
-            // Chart.js rendering
-            const ctx = document.getElementById('barChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Number of Users',
-                        data: data,
-                        backgroundColor: 'rgba(60,141,188,0.9)',
-                        borderColor: 'rgba(60,141,188,0.8)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script> --}}
 </body>
 
 </html>

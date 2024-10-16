@@ -11,14 +11,14 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-    
+
     <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-    
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    
+
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -117,7 +117,43 @@ label {
 .rating input:checked ~ label {
     color: gold;
 }
+ /* Centering the modal */
+ #imageModal {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+        }
 
+        /* Styles for mobile view */
+        #modalImage {
+            width: 80vw;
+            height: auto;
+        }
+
+        /* Media query for desktop view */
+        @media (min-width: 800px) {
+            #modalImage {
+                width: 750px;
+                height: 900px;
+            }
+        }
+
+        /* Style for close button */
+        #imageModal .close-btn {
+            position: absolute;
+            top: -5px;
+            right: 15px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -184,12 +220,21 @@ label {
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (Auth::user()->profile_image)
-                        <img src="{{ Storage::url(Auth::user()->profile_image) }}" style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
+                            <!-- Add an onclick event to show the image in the overlay -->
+                            <img src="{{ Storage::url(Auth::user()->profile_image) }}"
+                                style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image"
+                                onclick="openModal('{{ Storage::url(Auth::user()->profile_image) }}')">
                         @endif
                     </div>
                     <div class="info">
                         <a href="{{ route('profile.edit') }}" class="d-block">{{ Auth::user()->name }}</a>
                     </div>
+                </div>
+
+                <!-- Image Modal -->
+                <div id="imageModal">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <img id="modalImage" src="" alt="Profile Image">
                 </div>
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -256,7 +301,7 @@ label {
             <br>
             <br>
             <br>
-           
+
             <br>
             <br>
 
@@ -267,14 +312,14 @@ label {
                 <!-- content -->
                 <div class="container mt-5">
                     <h1 class="text-center">Submit Your Rating</h1>
-                
+
                     <!-- Display success message -->
                     @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
                     @endif
-                
+
                     <!-- Rating Form -->
                     <form action="{{ route('ratings.store') }}" method="POST">
                         @csrf
@@ -293,7 +338,7 @@ label {
                                 <label for="star1">&#9733;</label>
                             </div>
                         </div>
-                
+
                         <!-- Submit Button -->
                         <div class="text-center mt-3">
                             <button type="submit" class="btn btn-primary mt-2">Submit Rating</button>
@@ -385,6 +430,32 @@ label {
                 star.classList.remove('active');
                 if (star.dataset.value <= rating) {
                     star.classList.add('active');
+                }
+            });
+        }
+    </script>
+    <script>
+        function openModal(imageUrl) {
+            document.getElementById('modalImage').src = imageUrl;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        function confirmImageUpdate() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to update your profile image!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('profileImageForm').submit(); // Submit the form
                 }
             });
         }

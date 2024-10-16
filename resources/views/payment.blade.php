@@ -177,6 +177,43 @@
         border: 1.5px solid #1A73E8;
         box-shadow: none;
     }
+     /* Centering the modal */
+     #imageModal {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+        }
+
+        /* Styles for mobile view */
+        #modalImage {
+            width: 80vw;
+            height: auto;
+        }
+
+        /* Media query for desktop view */
+        @media (min-width: 800px) {
+            #modalImage {
+                width: 750px;
+                height: 900px;
+            }
+        }
+
+        /* Style for close button */
+        #imageModal .close-btn {
+            position: absolute;
+            top: -5px;
+            right: 15px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -243,12 +280,21 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (Auth::user()->profile_image)
-                        <img src="{{ Storage::url(Auth::user()->profile_image) }}" style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
+                            <!-- Add an onclick event to show the image in the overlay -->
+                            <img src="{{ Storage::url(Auth::user()->profile_image) }}"
+                                style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image"
+                                onclick="openModal('{{ Storage::url(Auth::user()->profile_image) }}')">
                         @endif
                     </div>
                     <div class="info">
                         <a href="{{ route('profile.edit') }}" class="d-block">{{ Auth::user()->name }}</a>
                     </div>
+                </div>
+
+                <!-- Image Modal -->
+                <div id="imageModal">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <img id="modalImage" src="" alt="Profile Image">
                 </div>
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -329,7 +375,7 @@
             <section>
                 <div class="container">
                     <div class="row">
-                        
+
                         <div class="col-12 mt-4">
                             <div class="card p-3">
                                 <p class="mb-0 fw-bold h4">Payment Methods</p>
@@ -509,6 +555,32 @@
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+    <script>
+        function openModal(imageUrl) {
+            document.getElementById('modalImage').src = imageUrl;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        function confirmImageUpdate() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to update your profile image!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('profileImageForm').submit(); // Submit the form
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

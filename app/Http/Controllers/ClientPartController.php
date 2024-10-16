@@ -71,4 +71,11 @@ class ClientPartController extends Controller
 
         return redirect()->back()->with('error', 'Unauthorized action.');
     }
+
+    public function getDetails($id)
+    {
+        $clientPart = ClientPart::findOrFail($id);
+        return response()->json($clientPart->getPartsAsArray());
+    }
+
 }

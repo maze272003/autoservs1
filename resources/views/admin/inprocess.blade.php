@@ -8,7 +8,7 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
@@ -67,7 +67,8 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (Auth::user()->profile_image)
-                        <img src="{{ Storage::url(Auth::user()->profile_image) }}" style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
+                            <img src="{{ Storage::url(Auth::user()->profile_image) }}"
+                                style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
                         @endif
                     </div>
                     <div class="info">
@@ -148,6 +149,9 @@
                 </div>
             </section>
             <!-- Main content -->
+            <!-- Main content -->
+            <!-- Main content -->
+            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -156,7 +160,8 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Process Table</h3>
                                 </div>
-                                <div class="card-body table-responsive p-0" style="max-height: 680px; overflow-y: auto;">
+                                <div class="card-body table-responsive p-0"
+                                    style="max-height: 680px; overflow-y: auto;">
                                     <table class="table table-head-fixed text-nowrap">
                                         <thead>
                                             <tr>
@@ -184,93 +189,128 @@
                                                     <td>{{ $process->appointmentTime }}</td>
                                                     <td>{{ $process->plateNumber }}</td>
                                                     <td>{{ $process->additionalNotes }}</td>
-                                
+
                                                     <!-- Action Buttons with Boxicons -->
                                                     <td>
-                                                        <!-- Add Parts Button with Boxicons -->
-                                                        <a href="#" data-toggle="modal" data-target="#addPartsModal-{{ $process->id }}" class="text-success">
-                                                            <i class="bx bx-plus-circle bx-md"></i> <!-- Slightly smaller plus-circle icon for Add Parts -->
+                                                        <a href="#" data-toggle="modal"
+                                                            data-target="#addPartsModal-{{ $process->id }}"
+                                                            class="text-success">
+                                                            <i class="bx bx-plus-circle bx-md"></i>
                                                         </a>
-                                                        
-                                                        <!-- View Parts Button with Boxicons -->
-                                                        <a href="#" data-toggle="modal" data-target="#viewPartsModal-{{ $process->id }}" class="text-info">
-                                                            <i class="bx bx-show bx-md"></i> <!-- Slightly smaller eye icon for View Parts -->
+
+                                                        <a href="#" data-toggle="modal"
+                                                            data-target="#viewPartsModal-{{ $process->id }}"
+                                                            class="text-info">
+                                                            <i class="bx bx-show bx-md"></i>
                                                         </a>
-                                                        
-                                                        <!-- Done Button with Boxicons -->
-                                                        <form action="{{ route('process.done', $process->id) }}" method="POST" style="display:inline;">
+
+                                                        <form action="{{ route('process.done', $process->id) }}"
+                                                            method="POST" style="display:inline;">
                                                             @csrf
-                                                            <button type="submit" class="text-danger border-0 bg-transparent">
-                                                                <i class="bx bx-check-circle bx-md"></i> <!-- Slightly smaller check-circle icon for Done -->
+                                                            <button type="submit"
+                                                                class="text-danger border-0 bg-transparent">
+                                                                <i class="bx bx-check-circle bx-md"></i>
                                                             </button>
                                                         </form>
+
+                                                        <!-- Print Button with Boxicons -->
+                                                        <button class="text-primary border-0 bg-transparent"
+                                                            onclick="openPrintModal('{{ $process->id }}')">
+                                                            <i class="bx bx-printer bx-md"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
-                                
+
                                                 <!-- Modal for Adding Parts -->
-                                                <div class="modal fade" id="addPartsModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal fade" id="addPartsModal-{{ $process->id }}"
+                                                    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                                    aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Add Parts for {{ $process->user->name ?? 'N/A' }}</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Add
+                                                                    Parts for {{ $process->user->name ?? 'N/A' }}</h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('client.parts.store') }}" method="POST">
+                                                                <form action="{{ route('client.parts.store') }}"
+                                                                    method="POST">
                                                                     @csrf
-                                                                    <input type="hidden" name="user_id" value="{{ $process->user_id }}">
+                                                                    <input type="hidden" name="user_id"
+                                                                        value="{{ $process->user_id }}">
                                                                     <div class="form-group">
                                                                         <label>Select Parts</label>
                                                                         <div>
                                                                             @foreach ($parts as $part)
                                                                                 <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" name="parts_ids[]" value="{{ $part->id }}" id="part-{{ $part->id }}">
-                                                                                    <label class="form-check-label" for="part-{{ $part->id }}">
-                                                                                        {{ $part->name_parts }} - ${{ $part->price }} (Qty: {{ $part->quantity }})
+                                                                                    <input class="form-check-input"
+                                                                                        type="checkbox"
+                                                                                        name="parts_ids[]"
+                                                                                        value="{{ $part->id }}"
+                                                                                        id="part-{{ $part->id }}">
+                                                                                    <label class="form-check-label"
+                                                                                        for="part-{{ $part->id }}">
+                                                                                        {{ $part->name_parts }} -
+                                                                                        ${{ $part->price }} (Qty:
+                                                                                        {{ $part->quantity }})
                                                                                     </label>
                                                                                 </div>
                                                                             @endforeach
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Add Parts</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-secondary"
+                                                                            data-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Add Parts</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                
+
                                                 <!-- Modal for Viewing Parts -->
-                                                <div class="modal fade" id="viewPartsModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="viewPartsModalLabel" aria-hidden="true">
+                                                <div class="modal fade" id="viewPartsModal-{{ $process->id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="viewPartsModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="viewPartsModalLabel">Parts for {{ $process->user->name ?? 'N/A' }}</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title" id="viewPartsModalLabel">Parts
+                                                                    for {{ $process->user->name ?? 'N/A' }}</h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul class="list-group">
                                                                     @php
-                                                                        $clientParts = \App\Models\ClientPart::where('user_id', $process->user_id)
+                                                                        $clientParts = \App\Models\ClientPart::where(
+                                                                            'user_id',
+                                                                            $process->user_id,
+                                                                        )
                                                                             ->with('part')
                                                                             ->get();
                                                                         $totalPrice = 0; // Initialize total price
                                                                     @endphp
                                                                     @forelse($clientParts as $clientPart)
                                                                         <li class="list-group-item">
-                                                                            {{ $clientPart->part->name_parts ?? 'N/A' }} - ${{ $clientPart->part->price ?? 'N/A' }}
+                                                                            {{ $clientPart->part->name_parts ?? 'N/A' }}
+                                                                            - ${{ $clientPart->part->price ?? 'N/A' }}
                                                                         </li>
                                                                         @php
-                                                                            $totalPrice += $clientPart->part->price ?? 0;
+                                                                            $totalPrice +=
+                                                                                $clientPart->part->price ?? 0;
                                                                         @endphp
                                                                     @empty
-                                                                        <li class="list-group-item">No parts added.</li>
+                                                                        <li class="list-group-item">No parts added.
+                                                                        </li>
                                                                     @endforelse
                                                                 </ul>
                                                                 @if ($totalPrice > 0)
@@ -278,22 +318,58 @@
                                                                 @endif
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!-- Print Modal -->
+                                                <div class="modal fade" id="printModal-{{ $process->id }}"
+                                                    tabindex="-1" role="dialog" aria-labelledby="printModalLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="printModalLabel">Receipt
+                                                                    for {{ $process->user->name ?? 'N/A' }}</h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body"
+                                                                id="printContent-{{ $process->id }}">
+                                                                <h6>Process ID: {{ $process->id }}</h6>
+                                                                <h6>Owner: {{ $process->user->name ?? 'N/A' }}</h6>
+                                                                <h6>Total Price: $<span
+                                                                        id="totalPrice-{{ $process->id }}">0</span>
+                                                                </h6>
+                                                                <h6>Parts:</h6>
+                                                                <ul id="partsList-{{ $process->id }}"
+                                                                    class="list-group"></ul>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary"
+                                                                    onclick="printReceipt('{{ $process->id }}')">Print
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- print rec end --}}
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
         </div>
         <!-- Footer -->
         <footer class="main-footer">
@@ -309,6 +385,59 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+
 </body>
+<script>
+    function openPrintModal(processId) {
+        const partsListElement = document.getElementById('partsList-' + processId);
+        const totalPriceElement = document.getElementById('totalPrice-' + processId);
+
+        // Clear previous contents
+        partsListElement.innerHTML = '';
+
+        // Fetch client parts for this process
+        fetch(`/client-parts/${processId}`) // Ensure this route is correctly set up in your Laravel application
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                let totalPrice = 0;
+
+                // Populate the list with parts
+                data.clientParts.forEach(part => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item';
+                    listItem.textContent = `${part.name_parts} - $${part.price}`;
+                    partsListElement.appendChild(listItem);
+
+                    // Add to total price
+                    totalPrice += part.price;
+                });
+
+                // Update total price in the modal
+                totalPriceElement.textContent = totalPrice.toFixed(2);
+
+                // Show the modal
+                $('#printModal-' + processId).modal('show');
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    function printReceipt(processId) {
+        const printContent = document.getElementById('printContent-' + processId).innerHTML;
+        const printWindow = window.open('', '', 'height=400,width=600');
+        printWindow.document.write('<html><head><title>Receipt</title>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
 
 </html>

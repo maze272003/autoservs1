@@ -9,7 +9,7 @@ use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\ShowProcessController;
 use App\Http\Controllers\ClientPartController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PrintController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatingController; // Include the RatingController
@@ -82,6 +82,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Client Parts Store
     Route::post('/process/{id}/done', [ProcessController::class, 'markAsDone'])->name('process.done');
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+    
+    // printcontroller
+    Route::get('/client-parts/{processId}', [PrintController::class, 'getClientParts']);
 });
 
 // Auth Routes

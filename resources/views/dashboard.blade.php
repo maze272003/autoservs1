@@ -30,6 +30,46 @@
 
 </head>
 
+<style>
+    /* Centering the modal */
+    #imageModal {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+    }
+
+    /* Styles for mobile view */
+    #modalImage {
+        width: 80vw;
+        height: auto;
+    }
+
+    /* Media query for desktop view */
+    @media (min-width: 800px) {
+        #modalImage {
+            width: 750px;
+            height: 900px;
+        }
+    }
+
+    /* Style for close button */
+    #imageModal .close-btn {
+        position: absolute;
+        top: -5px;
+        right: 15px;
+        font-size: 40px;
+        color: white;
+        cursor: pointer;
+    }
+</style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Preloader -->
@@ -85,8 +125,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
-                <img src="dist/img/autoservbg.png" style="height: 40px;" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                    style="opacity: .8">
+                <img src="dist/img/autoservbg.png" style="height: 40px;" alt="AdminLTE Logo"
+                    class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">AUTOSERV</span>
             </a>
             <!-- Sidebar -->
@@ -95,14 +135,23 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @if (Auth::user()->profile_image)
-                        <img src="{{ Storage::url(Auth::user()->profile_image) }}" style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image">
+                            <!-- Add an onclick event to show the image in the overlay -->
+                            <img src="{{ Storage::url(Auth::user()->profile_image) }}"
+                                style="height: 40px; width: 40px; border-radius: 50%;" alt="User Image"
+                                onclick="openModal('{{ Storage::url(Auth::user()->profile_image) }}')">
                         @endif
                     </div>
                     <div class="info">
                         <a href="{{ route('profile.edit') }}" class="d-block">{{ Auth::user()->name }}</a>
                     </div>
                 </div>
-                
+
+                <!-- Image Modal -->
+                <div id="imageModal">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <img id="modalImage" src="" alt="Profile Image">
+                </div>
+
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -196,7 +245,8 @@
                         </div>
                     </div>
                     <!-- Modal for Viewing Parts -->
-                    <div class="modal fade" id="viewPartsModal" tabindex="-1" role="dialog" aria-labelledby="viewPartsModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="viewPartsModal" tabindex="-1" role="dialog"
+                        aria-labelledby="viewPartsModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -214,14 +264,18 @@
                                             $totalPrice = 0; // Initialize total price
                                         @endphp
                                         @forelse($clientParts as $clientPart)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <li
+                                                class="list-group-item d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <strong>{{ $clientPart->part->name_parts ?? 'N/A' }}</strong> - ${{ $clientPart->part->price ?? 'N/A' }}
+                                                    <strong>{{ $clientPart->part->name_parts ?? 'N/A' }}</strong> -
+                                                    ${{ $clientPart->part->price ?? 'N/A' }}
                                                 </div>
-                                                <form action="{{ route('parts.decline', $clientPart->id) }}" method="POST" class="ml-2 decline-part-form">
+                                                <form action="{{ route('parts.decline', $clientPart->id) }}"
+                                                    method="POST" class="ml-2 decline-part-form">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm decline-part-button">Decline</button>
+                                                    <button type="button"
+                                                        class="btn btn-danger btn-sm decline-part-button">Decline</button>
                                                 </form>
                                             </li>
                                             @php
@@ -237,12 +291,13 @@
                                     @endif
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
@@ -624,6 +679,32 @@
             });
         });
     });
+</script>
+<script>
+    function openModal(imageUrl) {
+        document.getElementById('modalImage').src = imageUrl;
+        document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+
+    function confirmImageUpdate() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to update your profile image!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('profileImageForm').submit(); // Submit the form
+            }
+        });
+    }
 </script>
 
 </html>
