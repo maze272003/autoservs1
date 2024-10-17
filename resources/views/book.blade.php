@@ -68,12 +68,10 @@
         cursor: pointer;
     }
 </style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/autoservbg.png" alt="autoservbg" height="270" width="300">
-        </div>
+
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -239,6 +237,21 @@
         </div>
         <!-- /.content-header -->
         <!-- content -->
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    showCloseButton: true, // Add close button
+                    timer: 3000, // Time in milliseconds
+                    toast: true
+                });
+            </script>
+        @endif
+        <!-- Your booking form -->
+
         <div class="container">
             <form id="bookingForm" class="row g-3" method="POST" action="{{ route('bookings.store') }}">
                 @csrf

@@ -6,8 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+class User extends Authenticatable implements MustVerifyEmail
 
-class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'contact_number',
         'brgy',
         'street',
+        'google_verified', // Add google_verified to allow mass assignment
     ];
 
     /**
@@ -46,9 +48,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
+    // Remove this method, unless you need a self-referential relation
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }

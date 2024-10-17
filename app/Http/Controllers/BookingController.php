@@ -54,6 +54,11 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        // Check if the user's email is verified
+        if (!Auth::user()->hasVerifiedEmail()) {
+            return redirect()->back()->with('error', 'Your email must be verified before you can book. Go to your PROFILE and Verified You Account Thank You!');
+        }
+
         $request->validate([
             'carModel' => 'required|string|max:255',
             'serviceType' => 'required|string',
