@@ -14,6 +14,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatingController; // Include the RatingController
 
+
 // Public Routes
 Route::get('/', function () {
     return view('client.index');
