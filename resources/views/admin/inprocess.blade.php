@@ -21,6 +21,10 @@
         opacity: 0.5;
         /* Adjust this value to make it less dark */
     }
+    .text-darkred {
+        background-color: #8B0000; /* Dark Red background color for button */
+        border-radius: 4px; /* Optional: adds some border radius to the button */
+    }
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -127,11 +131,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('history.index') }}" class="nav-link">
+                            <a href="{{ route('admin.history.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
-                                <p>
-                                    View history
-                                </p>
+                                <p>View History</p>
                             </a>
                         </li>
                     </ul>
@@ -163,8 +165,7 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Process Table</h3>
                                 </div>
-                                <div class="card-body table-responsive p-0"
-                                    style="max-height: 680px; overflow-y: auto;">
+                                <div class="card-body table-responsive p-0" style="max-height: 680px; overflow-y: auto;">
                                     <table class="table table-head-fixed text-nowrap">
                                         <thead>
                                             <tr>
@@ -192,132 +193,105 @@
                                                     <td>{{ $process->appointmentTime }}</td>
                                                     <td>{{ $process->plateNumber }}</td>
                                                     <td>{{ $process->additionalNotes }}</td>
-
+            
                                                     <!-- Action Buttons -->
                                                     <td>
                                                         <!-- Add Parts Button -->
-                                                        <a href="#" data-toggle="modal"
-                                                            data-target="#addPartsModal-{{ $process->id }}"
-                                                            class="text-success">
+                                                        <a href="#" data-toggle="modal" data-target="#addPartsModal-{{ $process->id }}" class="text-success">
                                                             <i class="bx bx-plus-circle bx-md"></i>
                                                         </a>
-
+            
                                                         <!-- View Parts Button -->
-                                                        <a href="#" data-toggle="modal"
-                                                            data-target="#viewPartsModal-{{ $process->id }}"
-                                                            class="text-info">
+                                                        <a href="#" data-toggle="modal" data-target="#viewPartsModal-{{ $process->id }}" class="text-info">
                                                             <i class="bx bx-show bx-md"></i>
                                                         </a>
-
+            
                                                         <!-- Mark as Done Button -->
-                                                        <form action="{{ route('process.done', $process->id) }}"
-                                                            method="POST" style="display:inline;">
+                                                        <form action="{{ route('process.done', $process->id) }}" method="POST" style="display:inline;">
                                                             @csrf
-                                                            <button type="submit"
-                                                                class="text-danger border-0 bg-transparent">
-                                                                <i class="bx bx-check-circle bx-md"></i>
+                                                            <button type="submit" class="border-0 bg-transparent @if(!$process->proof_payment) text-darkred @endif" title="Mark as Done" @if(!$process->proof_payment) disabled @endif>
+                                                                <i class="bx bx-check-circle bx-md" style="color: red;"></i>
                                                             </button>
                                                         </form>
-
+            
                                                         <!-- Print Button -->
-                                                        <button class="text-primary border-0 bg-transparent"
-                                                            data-toggle="modal"
-                                                            data-target="#printModal-{{ $process->id }}">
+                                                        <button class="text-primary border-0 bg-transparent" data-toggle="modal" data-target="#printModal-{{ $process->id }}" @if(!$process->proof_payment) disabled @endif>
                                                             <i class="bx bx-printer bx-md"></i>
                                                         </button>
+            
+                                                        <!-- View Proof of Payment Icon -->
+                                                        @if($process->proof_payment)
+                                                            <a href="{{ asset('uploads/proofs/' . $process->proof_payment) }}" target="_blank" class="text-info">
+                                                                <i class="bx bx-file bx-md" title="View Proof of Payment"></i>
+                                                            </a>
+                                                        @else
+                                                            <i class="bx bx-file bx-md text-muted" title="No Proof of Payment Uploaded"></i>
+                                                        @endif
                                                     </td>
                                                 </tr>
-
+            
                                                 <!-- Modal for Adding Parts -->
-                                                <div class="modal fade" id="addPartsModal-{{ $process->id }}"
-                                                    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                                    aria-hidden="true">
+                                                <div class="modal fade" id="addPartsModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Add
-                                                                    Parts for {{ $process->user->name ?? 'N/A' }}</h5>
-                                                                <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Add Parts for {{ $process->user->name ?? 'N/A' }}</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="{{ route('client.parts.store') }}"
-                                                                    method="POST">
+                                                                <form action="{{ route('client.parts.store') }}" method="POST">
                                                                     @csrf
-                                                                    <input type="hidden" name="user_id"
-                                                                        value="{{ $process->user_id }}">
+                                                                    <input type="hidden" name="process_id" value="{{ $process->id }}">
                                                                     <div class="form-group">
                                                                         <label>Select Parts</label>
                                                                         <div>
                                                                             @foreach ($parts as $part)
                                                                                 <div class="form-check">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox"
-                                                                                        name="parts_ids[]"
-                                                                                        value="{{ $part->id }}"
-                                                                                        id="part-{{ $part->id }}">
-                                                                                    <label class="form-check-label"
-                                                                                        for="part-{{ $part->id }}">
-                                                                                        {{ $part->name_parts }} -
-                                                                                        ${{ $part->price }} (Qty:
-                                                                                        {{ $part->quantity }})
+                                                                                    <input class="form-check-input" type="checkbox" name="parts_ids[]" value="{{ $part->id }}" id="part-{{ $part->id }}">
+                                                                                    <label class="form-check-label" for="part-{{ $part->id }}">
+                                                                                        {{ $part->name_parts }} - ${{ $part->price }} (Qty: {{ $part->quantity }})
                                                                                     </label>
                                                                                 </div>
                                                                             @endforeach
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button"
-                                                                            class="btn btn-secondary"
-                                                                            data-dismiss="modal">Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Add Parts</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Add Parts</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
+            
                                                 <!-- Modal for Viewing Parts -->
-                                                <div class="modal fade" id="viewPartsModal-{{ $process->id }}"
-                                                    tabindex="-1" role="dialog"
-                                                    aria-labelledby="viewPartsModalLabel" aria-hidden="true">
+                                                <div class="modal fade" id="viewPartsModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="viewPartsModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="viewPartsModalLabel">Parts
-                                                                    for {{ $process->user->name ?? 'N/A' }}</h5>
-                                                                <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title" id="viewPartsModalLabel">Parts for {{ $process->user->name ?? 'N/A' }}</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <ul class="list-group">
                                                                     @php
-                                                                        $clientParts = \App\Models\ClientPart::where(
-                                                                            'user_id',
-                                                                            $process->user_id,
-                                                                        )
-                                                                            ->with('part')
-                                                                            ->get();
-                                                                        $totalPrice = 0; // Initialize total price
+                                                                        $clientParts = \App\Models\ClientPart::where('process_id', $process->id)->with('part')->get();
+                                                                        $totalPrice = 0;
                                                                     @endphp
                                                                     @forelse($clientParts as $clientPart)
                                                                         <li class="list-group-item">
-                                                                            {{ $clientPart->part->name_parts ?? 'N/A' }}
-                                                                            - ${{ $clientPart->part->price ?? 'N/A' }}
+                                                                            {{ $clientPart->part->name_parts ?? 'N/A' }} - ${{ $clientPart->part->price ?? 'N/A' }}
                                                                         </li>
                                                                         @php
-                                                                            $totalPrice +=
-                                                                                $clientPart->part->price ?? 0;
+                                                                            $totalPrice += $clientPart->part->price ?? 0;
                                                                         @endphp
                                                                     @empty
-                                                                        <li class="list-group-item">No parts added.
-                                                                        </li>
+                                                                        <li class="list-group-item">No parts added.</li>
                                                                     @endforelse
                                                                 </ul>
                                                                 @if ($totalPrice > 0)
@@ -325,49 +299,40 @@
                                                                 @endif
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
+            
                                                 <!-- Print Modal -->
-                                                <div class="modal fade" id="printModal-{{ $process->id }}"
-                                                    tabindex="-1" role="dialog" aria-labelledby="printModalLabel"
-                                                    aria-hidden="true">
+                                                <div class="modal fade" id="printModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="printModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="printModalLabel">Receipt
-                                                                    for {{ $process->user->name ?? 'N/A' }}</h5>
-                                                                <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
+                                                                <h5 class="modal-title" id="printModalLabel">Receipt for {{ $process->user->name ?? 'N/A' }}</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <h6>Process ID: {{ $process->id }}</h6>
                                                                 <h6>Owner: {{ $process->user->name ?? 'N/A' }}</h6>
-                                                                <h6>Total Price: $<span
-                                                                        id="totalPrice-{{ $process->id }}">{{ $totalPrice }}</span>
-                                                                </h6>
+                                                                <h6>Total Price: $<span id="totalPrice-{{ $process->id }}">{{ $totalPrice }}</span></h6>
                                                                 <h6>Parts:</h6>
-                                                                <ul id="partsList-{{ $process->id }}"
-                                                                    class="list-group">
+                                                                <ul id="partsList-{{ $process->id }}" class="list-group">
                                                                     @foreach ($clientParts as $clientPart)
                                                                         <li class="list-group-item">
-                                                                            {{ $clientPart->part->name_parts ?? 'N/A' }}
-                                                                            - ${{ $clientPart->part->price ?? 'N/A' }}
+                                                                            {{ $clientPart->part->name_parts ?? 'N/A' }} - ${{ $clientPart->part->price ?? 'N/A' }}
                                                                         </li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary"
-                                                                    onclick="printReceipt('{{ $process->id }}')">Print</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" onclick="printReceipt('{{ $process->id }}')" @if(!$process->proof_payment) disabled @endif>
+                                                                    Print
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -381,7 +346,6 @@
                     </div>
                 </div>
             </section>
-
         </div>
         <!-- Footer -->
         <footer class="main-footer">

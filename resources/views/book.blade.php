@@ -183,7 +183,7 @@
                         </li>
                         <!-- payment -->
                         <li class="nav-item">
-                            <a href="{{ route('payment') }}" class="nav-link">
+                            <a href="{{ route('payment.show') }}" class="nav-link">
                                 <i class="nav-icon fas fa-credit-card"></i>
                                 <p>Payment</p>
                             </a>
@@ -200,12 +200,7 @@
                                 <p>Feedback and Reviews</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="client.dashboard" class="nav-link">
-                                <i class="nav-icon fas fa-star"></i>
-                                <p>view history</p>
-                            </a>
-                        </li>
+                        
                     </ul>
             </div>
             </nav>
@@ -245,7 +240,7 @@
                     title: '{{ session('error') }}',
                     showConfirmButton: false,
                     showCloseButton: true, // Add close button
-                    timer: 3000, // Time in milliseconds
+                    timer: 10000, // Time in milliseconds
                     toast: true
                 });
             </script>

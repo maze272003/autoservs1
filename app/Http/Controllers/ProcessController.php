@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Process;
+use App\Models\Part; // Ensure this line is added to import the Part model
 use Illuminate\Http\Request;
 use App\Models\ClientPart; // Ensure this line is added
 use App\Models\HistoryCar;  // Ensure this line is added
@@ -18,6 +19,23 @@ class ProcessController extends Controller
 
         // Pass the bookings variable to the view
         return view('admin.bookings.index', compact('bookings')); // Use 'compact' to pass the correct variable
+    }
+    
+    public function inProcess()
+    {
+        // Fetch all processes along with user information and payment proofs
+        $processes = Process::with('user')->get();
+
+        // Pass the processes variable to the view
+        return view('admin.inprocess', compact('processes'));
+    }
+
+    public function showProcessTable()
+    {
+        $processes = Process::with('user')->get(); // Get the processes with related users
+        $parts = Part::all(); // Fetch all parts
+
+        return view('admin.inprocess', compact('processes', 'parts')); // Pass both variables to the view
     }
 
     public function process($id)
@@ -84,4 +102,22 @@ class ProcessController extends Controller
         return redirect()->back()->with('success', 'Process and parts have been marked as done and moved to history.');
     }
 
+    public function uploadProof(Request $request, $id)
+    {
+        $request->validate([
+            'proof_payment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
+        ]);
+    
+        $process = Process::findOrFail($id);
+    
+        if ($request->hasFile('proof_payment')) {
+            $imageName = time().'.'.$request->proof_payment->extension();
+            $request->proof_payment->move(public_path('uploads/proofs'), $imageName); // Adjust path as necessary
+    
+            $process->proof_payment = $imageName; // Save image path in the proof_payment column
+            $process->save();
+        }
+    
+        return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
+    }
 }

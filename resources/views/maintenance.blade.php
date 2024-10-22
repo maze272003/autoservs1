@@ -97,7 +97,7 @@
                             <a href="{{ route('dashboard') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    dashboard
+                                    Dashboard
                                 </p>
                             </a>
                         </li>
@@ -124,13 +124,14 @@
                         </li>
                         <!-- payment -->
                         <li class="nav-item">
-                            <a href="{{ route('payment') }}" class="nav-link">
+                            <a href="{{ route('payment.show') }}" class="nav-link">
                                 <i class="nav-icon fas fa-credit-card"></i>
                                 <p>Payment</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('customer.support') }}" class="nav-link">
+                            <a href="{{ route('customer.support') }}" class="nav-link"
+                                aria-label="Contact Customer Support">
                                 <i class="nav-icon fas fa-headset"></i>
                                 <p>Customer Support</p>
                             </a>

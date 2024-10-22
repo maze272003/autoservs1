@@ -9,6 +9,7 @@ class ClientPart extends Model
 {
     use HasFactory;
 
+    // Specify the fillable attributes
     protected $fillable = ['user_id', 'parts_id', 'process_id'];
 
     // Relationship to User model
@@ -21,5 +22,11 @@ class ClientPart extends Model
     public function part()
     {
         return $this->belongsTo(Part::class, 'parts_id');
+    }
+
+    // Relationship to Process model
+    public function process()
+    {
+        return $this->belongsTo(Process::class, 'process_id');
     }
 }

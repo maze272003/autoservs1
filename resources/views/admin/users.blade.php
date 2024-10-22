@@ -129,11 +129,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('history.index') }}" class="nav-link">
+                            <a href="{{ route('admin.history.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
-                                <p>
-                                    View history
-                                </p>
+                                <p>View History</p>
                             </a>
                         </li>
                     </ul>

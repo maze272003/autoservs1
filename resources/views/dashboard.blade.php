@@ -188,7 +188,7 @@
                         </li>
                         <!-- payment -->
                         <li class="nav-item">
-                            <a href="{{ route('payment') }}" class="nav-link">
+                            <a href="{{ route('payment.show') }}" class="nav-link">
                                 <i class="nav-icon fas fa-credit-card"></i>
                                 <p>Payment</p>
                             </a>
@@ -226,27 +226,30 @@
         </div>
         <!-- /.content-header -->
         <!-- Main content -->
+        
         <section class="content">
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-lg-3 col-6">
-                        <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
                                 <h3>{{ $addedPartsCount }}</h3> <!-- Display count of added parts -->
-                                <p>PURCHASED PARTS</p>
+                                <p>ADDED PARTS</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <a href="#" class="small-box-footer" data-toggle="modal"
-                                data-target="#viewPartsModal">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="#" class="small-box-footer" data-toggle="modal" data-target="#viewPartsModal">
+                                More info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
                         </div>
                     </div>
+                    
+                    
+                    
                     <!-- Modal for Viewing Parts -->
-                    <div class="modal fade" id="viewPartsModal" tabindex="-1" role="dialog"
-                        aria-labelledby="viewPartsModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="viewPartsModal" tabindex="-1" role="dialog" aria-labelledby="viewPartsModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -256,47 +259,53 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <ul class="list-group">
-                                        @php
-                                            $clientParts = \App\Models\ClientPart::where('user_id', Auth::id())
-                                                ->with('part')
-                                                ->get();
-                                            $totalPrice = 0; // Initialize total price
-                                        @endphp
-                                        @forelse($clientParts as $clientPart)
-                                            <li
-                                                class="list-group-item d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <strong>{{ $clientPart->part->name_parts ?? 'N/A' }}</strong> -
-                                                    ${{ $clientPart->part->price ?? 'N/A' }}
-                                                </div>
-                                                <form action="{{ route('parts.decline', $clientPart->id) }}"
-                                                    method="POST" class="ml-2 decline-part-form">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-sm decline-part-button">Decline</button>
-                                                </form>
-                                            </li>
+                                    @php
+                                        // Fetch all processes for the authenticated user
+                                        $processes = \App\Models\Process::where('user_id', Auth::id())->get();
+                                    @endphp
+
+                                    @foreach ($processes as $process)
+                                        <h5>Process ID: {{ $process->id }}</h5>
+                                        <ul class="list-group">
                                             @php
-                                                // Add the part's price to total price
-                                                $totalPrice += $clientPart->part->price ?? 0;
+                                                $clientParts = \App\Models\ClientPart::where('process_id', $process->id) // Fetch client parts based on process_id
+                                                    ->with('part')
+                                                    ->get();
+                                                $totalPrice = 0; // Initialize total price for this process
                                             @endphp
-                                        @empty
-                                            <li class="list-group-item">No parts added.</li>
-                                        @endforelse
-                                    </ul>
-                                    @if ($totalPrice > 0)
-                                        <h5>Total Price: ${{ $totalPrice }}</h5> <!-- Display total price -->
-                                    @endif
+                                            @forelse($clientParts as $clientPart)
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong>{{ $clientPart->part->name_parts ?? 'N/A' }}</strong> -
+                                                        ${{ $clientPart->part->price ?? 'N/A' }}
+                                                    </div>
+                                                    <form action="{{ route('parts.decline', $clientPart->id) }}" method="POST" class="ml-2 decline-part-form">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                                    </form>
+                                                    
+                                                </li>
+                                                @php
+                                                    // Add the part's price to total price
+                                                    $totalPrice += $clientPart->part->price ?? 0;
+                                                @endphp
+                                            @empty
+                                                <li class="list-group-item">No parts added for this process.</li>
+                                            @endforelse
+                                        </ul>
+                                        @if ($totalPrice > 0)
+                                            <h5>Total Price: ${{ $totalPrice }}</h5> <!-- Display total price -->
+                                        @endif
+                                    @endforeach
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- ./col -->
                     <div class="col-lg-3 col-6">
@@ -304,6 +313,7 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>{{ $bookingCount }}<sup style="font-size: 20px"></sup></h3>
+                                {{-- <h3>PENDING</h3> --}}
                                 <p>PENDING CAR</p>
                             </div>
                             <div class="icon">
@@ -371,6 +381,7 @@
                         <div class="small-box bg-danger">
                             <div class="inner">
                                 <h3>{{ $canceledCount }}</h3>
+                                {{-- <h3>CANCELLED</h3> --}}
                                 <p>CANCELLED BOOK</p>
                             </div>
                             <div class="icon">
@@ -436,6 +447,7 @@
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3>{{ $processCount }}</h3>
+                                {{-- <h3>IN RPOCESS</h3> --}}
                                 <p>IN RPOCESS CAR</p>
                             </div>
                             <div class="icon">

@@ -20,37 +20,38 @@ class BookingController extends Controller
         return view('admin.bookings.index', compact('bookings')); // Ensure 'bookings' is passed correctly
     }
 
-    public function showDashboard()
-    {
-        $userId = auth()->id();
+//   public function showDashboard()
+// {
+//     $userId = auth()->id();
 
-        // Fetch all bookings for the authenticated user
-        $bookings = Booking::where('user_id', $userId)->get();
-        $bookingCount = $bookings->count();
+//     // Fetch all bookings for the authenticated user
+//     $bookings = Booking::where('user_id', $userId)->get();
+//     $bookingCount = $bookings->count();
 
-        // Fetch all canceled bookings for the authenticated user
-        $canceledBookings = CancelledBooking::where('user_id', $userId)->get();
-        $canceledCount = $canceledBookings->count();
+//     // Fetch all canceled bookings for the authenticated user
+//     $canceledBookings = CancelledBooking::where('user_id', $userId)->get();
+//     $canceledCount = $canceledBookings->count();
 
-        // Fetch 'in process' bookings for the authenticated user
-        $processes = Process::where('user_id', $userId)
-            ->where('status', 'in process')
-            ->get();
-        $processCount = $processes->count();
+//     // Fetch 'in process' bookings for the authenticated user
+//     $processes = Process::where('user_id', $userId)
+//         ->where('status', 'in process')
+//         ->get();
+//     $processCount = $processes->count();
 
-        // Fetch 'pending' bookings for the authenticated user
-        $pendingBookings = Booking::where('user_id', $userId)
-            ->where('status', 'pending')
-            ->get();
+//     // Fetch 'pending' bookings for the authenticated user
+//     $pendingBookings = Booking::where('user_id', $userId)
+//         ->where('status', 'pending')
+//         ->get();
 
-        // Count added parts for the authenticated user
-        $addedPartsCount = ClientPart::where('user_id', $userId)->count();
+//     // Count added parts for the authenticated user
+//     $addedPartsCount = ClientPart::where('user_id', $userId)->count();
 
-        // Fetch added parts for modal display
-        $clientParts = ClientPart::where('user_id', $userId)->with('part')->get();
+//     // Fetch added parts for modal display (optional)
+//     $clientParts = ClientPart::where('user_id', $userId)->with('part')->get();
 
-        return view('dashboard', compact('bookings', 'bookingCount', 'canceledBookings', 'canceledCount', 'processes', 'processCount', 'pendingBookings', 'addedPartsCount', 'clientParts'));
-    }
+//     // Pass all relevant data to the view
+//     return view('dashboard', compact('bookings', 'bookingCount', 'canceledBookings', 'canceledCount', 'processes', 'processCount', 'pendingBookings', 'addedPartsCount', 'clientParts'));
+// }
 
     public function store(Request $request)
     {

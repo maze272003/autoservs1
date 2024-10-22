@@ -272,7 +272,7 @@ label {
                         </li>
                         <!-- payment -->
                         <li class="nav-item">
-                            <a href="{{ route('payment') }}" class="nav-link">
+                            <a href="{{ route('payment.show') }}" class="nav-link">
                                 <i class="nav-icon fas fa-credit-card"></i>
                                 <p>Payment</p>
                             </a>

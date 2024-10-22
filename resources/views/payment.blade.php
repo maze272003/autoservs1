@@ -29,192 +29,125 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('payment.css') }}">
-
 </head>
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: 'Poppins', sans-serif
+        font-family: 'Poppins', sans-serif;
     }
 
-    .container {
-        margin: 30px auto;
-    }
-
-    .container .card {
-        width: 100%;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        background: #fff;
-        border-radius: 0px;
-    }
-
-    body {
-        background: #eee
-    }
-
-    .btn.btn-primary {
-        background-color: #ddd;
-        color: black;
-        box-shadow: none;
-        border: none;
-        font-size: 20px;
-        width: 100%;
-        height: 100%;
-    }
-
-    .btn.btn-primary:focus {
-        box-shadow: none;
-    }
-
-    .container .card .img-box {
-        width: 80px;
-        height: 50px;
-    }
-
-    .container .card img {
-        width: 100%;
-        object-fit: fill;
-    }
-
-    .container .card .number {
-        font-size: 24px;
-    }
-
-    .container .card-body .btn.btn-primary .fab.fa-cc-paypal {
-        font-size: 32px;
-        color: #3333f7;
-    }
-
-    .fab.fa-cc-amex {
-        color: #1c6acf;
-        font-size: 32px;
-    }
-
-    .fab.fa-cc-mastercard {
-        font-size: 32px;
-        color: red;
-    }
-
-    .fab.fa-cc-discover {
-        font-size: 32px;
-        color: orange;
-    }
-
-    .c-green {
-        color: green;
-    }
-
-    .box {
-        height: 40px;
-        width: 50px;
+    /* Flex container for QR and table */
+    .flex-container {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #ddd;
+        justify-content: flex-start; /* Align slightly to the right */
+        align-items: flex-start;
+        margin: 5px 20px; /* Adds a right shift */
     }
 
-    .btn.btn-primary.payment {
-        background-color: #1c6acf;
-        color: white;
-        border-radius: 0px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 24px;
+    /* QR Image Styling */
+    .qr-container {
+        flex-basis: 30%;
+        margin-right: 20px; /* Adds a small margin to the right */
     }
 
-    .form__div {
-        height: 50px;
-        position: relative;
-        margin-bottom: 24px;
-    }
-
-    .form-control {
+    .qr-image {
         width: 100%;
-        height: 45px;
+        height: auto;
+        max-width: 300px;
+        object-fit: contain;
+    }
+
+    /* Table container will take remaining space */
+    .table-container {
+        flex-basis: 65%;
+    }
+
+    .table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        word-wrap: break-word;
+    }
+
+    .table td button {
+        padding: 5px 10px;
         font-size: 14px;
-        border: 1px solid #DADCE0;
-        border-radius: 0;
-        outline: none;
-        padding: 2px;
-        background: none;
-        z-index: 1;
-        box-shadow: none;
     }
 
-    .form__label {
-        position: absolute;
-        left: 16px;
-        top: 10px;
-        background-color: #fff;
-        color: #80868B;
-        font-size: 16px;
-        transition: .3s;
-        text-transform: uppercase;
-    }
-
-    .form-control:focus+.form__label {
-        top: -8px;
-        left: 12px;
-        color: #1A73E8;
-        font-size: 12px;
-        font-weight: 500;
-        z-index: 10;
-    }
-
-    .form-control:not(:placeholder-shown).form-control:not(:focus)+.form__label {
-        top: -8px;
-        left: 12px;
-        font-size: 12px;
-        font-weight: 500;
-        z-index: 10;
-    }
-
-    .form-control:focus {
-        border: 1.5px solid #1A73E8;
-        box-shadow: none;
-    }
-     /* Centering the modal */
-     #imageModal {
-            display: none;
+    /* Responsive design for smaller screens */
+    @media (max-width: 768px) {
+        .flex-container {
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
+            margin-right: 0; /* Remove the negative margin */
+        }
+
+        .qr-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .qr-image {
+            max-width: 200px; /* Slightly smaller for mobile */
+        }
+
+        .table-container {
+            width: 100%; /* Make the table full width */
+            overflow-x: auto; /* Enable horizontal scrolling if necessary */
+        }
+
+        .table {
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
+            font-size: 12px;
         }
 
-        /* Styles for mobile view */
-        #modalImage {
-            width: 80vw;
-            height: auto;
+        .table td, .table th {
+            display: block;
+            width: 100%;
+            text-align: left;
         }
 
-        /* Media query for desktop view */
-        @media (min-width: 800px) {
-            #modalImage {
-                width: 750px;
-                height: 900px;
-            }
+        .table thead {
+            display: none;
         }
 
-        /* Style for close button */
-        #imageModal .close-btn {
+        .table tr {
+            margin-bottom: 15px;
+            display: block;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table td {
+            padding-left: 50%;
+            position: relative;
+            text-align: left;
+        }
+
+        .table td::before {
+            content: attr(data-label);
             position: absolute;
-            top: -5px;
-            right: 15px;
-            font-size: 40px;
-            color: white;
-            cursor: pointer;
+            left: 0;
+            width: 45%;
+            padding-left: 15px;
+            font-weight: bold;
         }
+
+        .table td button {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+        }
+    }
 </style>
+
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -227,8 +160,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
-                            class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="index3.html" class="nav-link">Home</a>
@@ -291,11 +223,6 @@
                     </div>
                 </div>
 
-                <!-- Image Modal -->
-                <div id="imageModal">
-                    <span class="close-btn" onclick="closeModal()">&times;</span>
-                    <img id="modalImage" src="" alt="Profile Image">
-                </div>
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -305,7 +232,7 @@
                             <a href="{{ route('dashboard') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    dashboard
+                                    Dashboard
                                 </p>
                             </a>
                         </li>
@@ -332,13 +259,14 @@
                         </li>
                         <!-- payment -->
                         <li class="nav-item">
-                            <a href="{{ route('payment') }}" class="nav-link">
+                            <a href="{{ route('payment.show') }}" class="nav-link">
                                 <i class="nav-icon fas fa-credit-card"></i>
                                 <p>Payment</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('customer.support') }}" class="nav-link">
+                            <a href="{{ route('customer.support') }}" class="nav-link"
+                                aria-label="Contact Customer Support">
                                 <i class="nav-icon fas fa-headset"></i>
                                 <p>Customer Support</p>
                             </a>
@@ -351,9 +279,7 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -364,223 +290,124 @@
                         <div class="col-sm-6">
                             <h1 class="m-0">PAYMENT</h1>
                         </div>
-
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.container-fluid -->
             </div>
-            <!-- /.content-header -->
-            <!-- section -->
+            <!-- Section for QR code -->
             <section>
                 <div class="container">
-                    <div class="row">
-
-                        <div class="col-12 mt-4">
-                            <div class="card p-3">
-                                <p class="mb-0 fw-bold h4">Payment Methods</p>
-                            </div>
+                    <div class="flex-container">
+                        <!-- QR Code -->
+                        <div class="qr-container">
+                            <img src="{{ asset('dist/img/qrpayment.jpg') }}" class="qr-image" alt="QR code" draggable="false" oncontextmenu="return false;" style="pointer-events: none;">
                         </div>
-                        <div class="col-12">
-                            <div class="card p-3">
-                                <div class="card-body border p-0">
-                                    <p>
-                                        <a class="btn btn-primary w-100 h-100 d-flex align-items-center justify-content-between"
-                                            data-bs-toggle="collapse" href="#collapseExample" role="button"
-                                            aria-expanded="true" aria-controls="collapseExample">
-                                            <span class="fw-bold">PayPal</span>
-                                            <span class="fab fa-cc-paypal">
-                                            </span>
-                                        </a>
-                                    </p>
-                                    <div class="collapse p-3 pt-0" id="collapseExample">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p class="h4 mb-0">Summary</p>
-                                                <p class="mb-0"><span class="fw-bold">Product:</span><span
-                                                        class="c-green">: Name of
-                                                        product</span>
-                                                </p>
-                                                <p class="mb-0"><span class="fw-bold">Price:</span><span
-                                                        class="c-green">:$452.90</span></p>
-                                                <p class="mb-0">Lorem ipsum, dolor sit amet consectetur adipisicing
-                                                    elit. Atque
-                                                    nihil neque
-                                                    quisquam aut
-                                                    repellendus, dicta vero? Animi dicta cupiditate, facilis provident
-                                                    quibusdam ab
-                                                    quis,
-                                                    iste harum ipsum hic, nemo qui!
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body border p-0">
-                                    <p>
-                                        <a class="btn btn-primary p-2 w-100 h-100 d-flex align-items-center justify-content-between"
-                                            data-bs-toggle="collapse" href="#collapseExample" role="button"
-                                            aria-expanded="true" aria-controls="collapseExample">
-                                            <span class="fw-bold">Credit Card</span>
-                                            <span class="">
-                                                <span class="fab fa-cc-amex"></span>
-                                                <span class="fab fa-cc-mastercard"></span>
-                                                <span class="fab fa-cc-discover"></span>
-                                            </span>
-                                        </a>
-                                    </p>
-                                    <div class="collapse show p-3 pt-0" id="collapseExample">
-                                        <div class="row">
-                                            <div class="col-lg-5 mb-lg-0 mb-3">
-                                                <p class="h4 mb-0">Summary</p>
-                                                <p class="mb-0"><span class="fw-bold">Product:</span><span
-                                                        class="c-green">: Name of
-                                                        product</span>
-                                                </p>
-                                                <p class="mb-0">
-                                                    <span class="fw-bold">Price:</span>
-                                                    <span class="c-green">:$452.90</span>
-                                                </p>
-                                                <p class="mb-0">Lorem ipsum, dolor sit amet consectetur adipisicing
-                                                    elit. Atque
-                                                    nihil neque
-                                                    quisquam aut
-                                                    repellendus, dicta vero? Animi dicta cupiditate, facilis provident
-                                                    quibusdam ab
-                                                    quis,
-                                                    iste harum ipsum hic, nemo qui!
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-7">
-                                                <form action="" class="form">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="form__div">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder=" ">
-                                                                <label for="" class="form__label">Card
-                                                                    Number</label>
-                                                            </div>
+                        <!-- Table -->
+                        <div class="table-container">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Service Name</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                            <th>Upload Proof</th> <!-- New Column -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($processes as $process)
+                                            <tr>
+                                                <td>{{ $process->serviceType }}</td>
+                                                <td>${{ number_format($process->totalPrice, 2) }}</td>
+                                                <td>{{ $process->status }}</td>
+                                                <td>
+                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#viewPartsModal-{{ $process->id }}">
+                                                        View Added Parts
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#uploadProofModal-{{ $process->id }}">
+                                                        Upload Proof
+                                                    </button>
+                                                </td>
+                                            </tr>
+            
+                                            <!-- Modal for Viewing Added Parts -->
+                                            <div class="modal fade" id="viewPartsModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="viewPartsModalLabel-{{ $process->id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="viewPartsModalLabel-{{ $process->id }}">Added Parts for {{ $process->serviceType }}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="form__div">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder=" ">
-                                                                <label for="" class="form__label">MM /
-                                                                    yy</label>
-                                                            </div>
+                                                        <div class="modal-body">
+                                                            <!-- Add logic here to display the added parts -->
+                                                            <ul>
+                                                                @foreach($process->clientParts as $clientPart) <!-- Assuming you have a relationship defined -->
+                                                                    <li>{{ $clientPart->part->name_parts }} - ${{ number_format($clientPart->part->price, 2) }}</li>
+                                                                @endforeach
+                                                            </ul>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="form__div">
-                                                                <input type="password" class="form-control"
-                                                                    placeholder=" ">
-                                                                <label for="" class="form__label">cvv
-                                                                    code</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="form__div">
-                                                                <input type="text" class="form-control"
-                                                                    placeholder=" ">
-                                                                <label for="" class="form__label">name on the
-                                                                    card</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="btn btn-primary w-100">Sumbit</div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="btn btn-primary payment">
-                                Make Payment
+            
+                                            <!-- Modal for Uploading Payment Proof -->
+                                            <div class="modal fade" id="uploadProofModal-{{ $process->id }}" tabindex="-1" role="dialog" aria-labelledby="uploadProofModalLabel-{{ $process->id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="uploadProofModalLabel-{{ $process->id }}">Upload Payment Proof for {{ $process->serviceType }}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('processes.uploadProof', $process->id) }}" method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                <div class="form-group">
+                                                                    <label for="proof_payment">Choose Payment Proof Image</label>
+                                                                    <input type="file" class="form-control-file" name="proof_payment" id="proof_payment" required>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Upload Proof</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <section>
-                    <!-- section -->
-                    <!-- /.content -->
+            </section>
+            
+            
         </div>
-        <!-- /.content-wrapper -->
+        <!-- Footer -->
         <footer class="main-footer">
             <strong>Copyright &copy; 2022-2024 <a href="https://adminlte.io">AUTOSERV</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> v1
+                <b>Version</b> 3.1.0
             </div>
         </footer>
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
     </div>
-    <!-- ./wrapper -->
-    <!-- jQuery -->
+    <!-- Scripts -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <!-- Bootstrap 4 -->
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- ChartJS -->
-    <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
-    <!-- Sparkline -->
-    <script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script>
-    <!-- JQVMap -->
-    <script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset('plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="{{ asset('plugins/jquery-knob/jquery.knob.min.js') }}"></script>
-    <!-- daterangepicker -->
-    <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
-    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-    <!-- Summernote -->
-    <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
-    <!-- overlayScrollbars -->
-    <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
-    <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
-    <script>
-        function openModal(imageUrl) {
-            document.getElementById('modalImage').src = imageUrl;
-            document.getElementById('imageModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-
-        function confirmImageUpdate() {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You want to update your profile image!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, update it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('profileImageForm').submit(); // Submit the form
-                }
-            });
-        }
-    </script>
+    <script src="{{ asset('payment.js') }}"></script>
 </body>
 
 </html>

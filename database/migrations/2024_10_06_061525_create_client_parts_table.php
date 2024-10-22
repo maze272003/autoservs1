@@ -12,6 +12,7 @@ class CreateClientPartsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // User who owns the part
             $table->foreignId('parts_id')->constrained()->onDelete('cascade'); // Part ID
+            $table->string('process_id', 50)->nullable(); // Add the process_id column with a length of 50
             $table->timestamps();
         });
     }
