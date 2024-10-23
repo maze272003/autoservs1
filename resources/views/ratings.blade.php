@@ -160,8 +160,9 @@ label {
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/autoservbg.png" alt="autoservbg" height="270" width="300">
+            <img class="animation__shake" src="{{ asset('dist/img/autoservbg.png') }}" alt="autoservbg" height="270" width="300">
         </div>
+        
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -258,18 +259,19 @@ label {
                         </li>
                         <!-- history -->
                         <li class="nav-item">
-                            <a href="{{ route('maintenance') }}" class="nav-link">
+                            <a href="{{ route('ClientHistory.maintenanceHistory') }}" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <p>Maintenance History</p>
                             </a>
                         </li>
                         <!-- PROFILE -->
                         <li class="nav-item">
-                            <a href="{{ route('notification') }}" class="nav-link">
+                            <a href="{{ route('messages.notification') }}" class="nav-link">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
                             </a>
                         </li>
+                        
                         <!-- payment -->
                         <li class="nav-item">
                             <a href="{{ route('payment.show') }}" class="nav-link">

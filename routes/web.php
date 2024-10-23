@@ -119,6 +119,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\CardDashboardController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\HistoryBookingController;
 
 // Public Routes
 Route::get('/', function () {
@@ -164,6 +165,20 @@ Route::middleware(['auth'])->group(function () {
     // Payment Routes
     Route::get('/payment', [PaymentController::class, 'showPayment'])->name('payment.show');
     Route::post('processes/{id}/upload-proof', [ProcessController::class, 'uploadProof'])->name('processes.uploadProof');
+
+    // notification
+    // Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('notifications');
+    Route::get('/notifications', [MessageController::class, 'showNotifications'])->name('notifications');
+    Route::get('/notifications', [MessageController::class, 'showNotifications'])->name('messages.notification');
+    Route::post('/messages/delete', [MessageController::class, 'deleteMessages'])->name('messages.delete');
+
+    // HistoryBooking
+    Route::get('/maintenance/history', [HistoryBookingController::class, 'showMaintenanceHistory'])->name('maintenance.history');
+    Route::get('/client/history/maintenance', [HistoryBookingController::class, 'clientMaintenanceHistory'])
+    ->name('ClientHistory.maintenanceHistory');
+
+
+
 });
 
 // Admin Routes

@@ -71,7 +71,9 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="<?php echo e(asset('dist/img/autoservbg.png')); ?>" alt="autoservbg" height="270" width="300">
+        </div>
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -158,7 +160,7 @@
                             <a href="<?php echo e(route('dashboard')); ?>" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    dashboard
+                                    Dashboard
                                 </p>
                             </a>
                         </li>
@@ -171,18 +173,19 @@
                         </li>
                         <!-- history -->
                         <li class="nav-item">
-                            <a href="<?php echo e(route('maintenance')); ?>" class="nav-link">
+                            <a href="<?php echo e(route('ClientHistory.maintenanceHistory')); ?>" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <p>Maintenance History</p>
                             </a>
                         </li>
                         <!-- PROFILE -->
                         <li class="nav-item">
-                            <a href="<?php echo e(route('notification')); ?>" class="nav-link">
+                            <a href="<?php echo e(route('messages.notification')); ?>" class="nav-link">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
                             </a>
                         </li>
+                        
                         <!-- payment -->
                         <li class="nav-item">
                             <a href="<?php echo e(route('payment.show')); ?>" class="nav-link">
@@ -191,7 +194,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo e(route('customer.support')); ?>" class="nav-link">
+                            <a href="<?php echo e(route('customer.support')); ?>" class="nav-link"
+                                aria-label="Contact Customer Support">
                                 <i class="nav-icon fas fa-headset"></i>
                                 <p>Customer Support</p>
                             </a>
@@ -202,7 +206,6 @@
                                 <p>Feedback and Reviews</p>
                             </a>
                         </li>
-                        
                     </ul>
             </div>
             </nav>

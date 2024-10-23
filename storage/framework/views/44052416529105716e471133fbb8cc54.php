@@ -208,9 +208,10 @@
                                                             <i class="bx bx-show bx-md"></i>
                                                         </a>
             
-                                                        <!-- Mark as Done Button -->
+                                                       <!-- Mark as Done Button -->
                                                         <form action="<?php echo e(route('process.done', $process->id)); ?>" method="POST" style="display:inline;">
                                                             <?php echo csrf_field(); ?>
+                                                            <?php echo method_field('PUT'); ?> <!-- Specify the method as PUT -->
                                                             <button type="submit" class="border-0 bg-transparent <?php if(!$process->proof_payment): ?> text-darkred <?php endif; ?>" title="Mark as Done" <?php if(!$process->proof_payment): ?> disabled <?php endif; ?>>
                                                                 <i class="bx bx-check-circle bx-md" style="color: red;"></i>
                                                             </button>

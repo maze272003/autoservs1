@@ -206,9 +206,10 @@
                                                             <i class="bx bx-show bx-md"></i>
                                                         </a>
             
-                                                        <!-- Mark as Done Button -->
+                                                       <!-- Mark as Done Button -->
                                                         <form action="{{ route('process.done', $process->id) }}" method="POST" style="display:inline;">
                                                             @csrf
+                                                            @method('PUT') <!-- Specify the method as PUT -->
                                                             <button type="submit" class="border-0 bg-transparent @if(!$process->proof_payment) text-darkred @endif" title="Mark as Done" @if(!$process->proof_payment) disabled @endif>
                                                                 <i class="bx bx-check-circle bx-md" style="color: red;"></i>
                                                             </button>

@@ -71,7 +71,9 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="{{ asset('dist/img/autoservbg.png') }}" alt="autoservbg" height="270" width="300">
+        </div>
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -156,7 +158,7 @@
                             <a href="{{ route('dashboard') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    dashboard
+                                    Dashboard
                                 </p>
                             </a>
                         </li>
@@ -169,18 +171,19 @@
                         </li>
                         <!-- history -->
                         <li class="nav-item">
-                            <a href="{{ route('maintenance') }}" class="nav-link">
+                            <a href="{{ route('ClientHistory.maintenanceHistory') }}" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <p>Maintenance History</p>
                             </a>
                         </li>
                         <!-- PROFILE -->
                         <li class="nav-item">
-                            <a href="{{ route('notification') }}" class="nav-link">
+                            <a href="{{ route('messages.notification') }}" class="nav-link">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
                             </a>
                         </li>
+                        
                         <!-- payment -->
                         <li class="nav-item">
                             <a href="{{ route('payment.show') }}" class="nav-link">
@@ -189,7 +192,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('customer.support') }}" class="nav-link">
+                            <a href="{{ route('customer.support') }}" class="nav-link"
+                                aria-label="Contact Customer Support">
                                 <i class="nav-icon fas fa-headset"></i>
                                 <p>Customer Support</p>
                             </a>
@@ -200,7 +204,6 @@
                                 <p>Feedback and Reviews</p>
                             </a>
                         </li>
-                        
                     </ul>
             </div>
             </nav>

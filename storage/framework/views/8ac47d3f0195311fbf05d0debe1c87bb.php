@@ -153,8 +153,9 @@
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/autoservbg.png" alt="autoservbg" height="270" width="300">
+            <img class="animation__shake" src="<?php echo e(asset('dist/img/autoservbg.png')); ?>" alt="autoservbg" height="270" width="300">
         </div>
+        
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -203,11 +204,11 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-                <img src="dist/img/autoservbg.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                    style="opacity: .8">
+            <a href="<?php echo e(url('/')); ?>" class="brand-link">
+                <img src="<?php echo e(asset('dist/img/autoservbg.png')); ?>" alt="AUTOSERV Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">AUTOSERV</span>
             </a>
+            
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
@@ -254,11 +255,12 @@
                         </li>
                         <!-- PROFILE -->
                         <li class="nav-item">
-                            <a href="<?php echo e(route('notification')); ?>" class="nav-link">
+                            <a href="<?php echo e(route('messages.notification')); ?>" class="nav-link">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
                             </a>
                         </li>
+                        
                         <!-- payment -->
                         <li class="nav-item">
                             <a href="<?php echo e(route('payment.show')); ?>" class="nav-link">
@@ -398,7 +400,7 @@
         </div>
         <!-- Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2022-2024 <a href="https://adminlte.io">AUTOSERV</a>.</strong>
+            <strong>Copyright &copy; 2022-2024 <a href="https://github.com/maze272003/autoservs1.git">AUTOSERV</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 3.1.0

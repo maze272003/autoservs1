@@ -9,7 +9,7 @@ class Message extends Model
 {
     use HasFactory;
 
-    // Define the fillable properties
+    // Define the fillable fields in the messages table
     protected $fillable = [
         'email',
         'message',

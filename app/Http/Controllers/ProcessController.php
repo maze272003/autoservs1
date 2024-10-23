@@ -12,38 +12,34 @@ use App\Models\HistoryPart; // Ensure this line is added
 
 class ProcessController extends Controller
 {
+    // Fetch all bookings and pass them to the 'admin.bookings.index' view
     public function index()
     {
-        // Fetch all bookings along with user information
-        $bookings = Booking::with('user')->get(); // Ensure this fetches bookings
-
-        // Pass the bookings variable to the view
-        return view('admin.bookings.index', compact('bookings')); // Use 'compact' to pass the correct variable
+        $bookings = Booking::with('user')->get();
+        return view('admin.bookings.index', compact('bookings'));
     }
     
+    // Fetch all processes with related users and payment proofs
     public function inProcess()
     {
-        // Fetch all processes along with user information and payment proofs
         $processes = Process::with('user')->get();
-
-        // Pass the processes variable to the view
         return view('admin.inprocess', compact('processes'));
     }
 
+    // Show the process table with parts available for selection
     public function showProcessTable()
     {
-        $processes = Process::with('user')->get(); // Get the processes with related users
+        $processes = Process::with('user')->get(); // Get processes with related users
         $parts = Part::all(); // Fetch all parts
-
-        return view('admin.inprocess', compact('processes', 'parts')); // Pass both variables to the view
+        return view('admin.inprocess', compact('processes', 'parts')); // Pass both to the view
     }
 
+    // Process a booking and create a new process record, then delete the booking
     public function process($id)
     {
-        // Find the booking by ID
         $booking = Booking::findOrFail($id);
 
-        // Create a new process record
+        // Create a new process based on the booking data
         Process::create([
             'carModel' => $booking->carModel,
             'serviceType' => $booking->serviceType,
@@ -55,17 +51,18 @@ class ProcessController extends Controller
             'user_id' => $booking->user_id,
         ]);
 
-        // Delete the booking record
+        // Delete the booking
         $booking->delete();
 
         return redirect()->route('admin.bookings.index')->with('success', 'Booking processed successfully.');
     }
 
+    // Mark a process as done and move data to history tables (cars and parts)
     public function markAsDone($id)
     {
         $process = Process::findOrFail($id);
 
-        // Transfer process data to history_cars
+        // Transfer the process data to the history_cars table
         $historyCar = new HistoryCar();
         $historyCar->user_id = $process->user_id; // Ensure this is set for the history car
         $historyCar->carModel = $process->carModel;
@@ -77,47 +74,50 @@ class ProcessController extends Controller
         $historyCar->additionalNotes = $process->additionalNotes;
         $historyCar->save();
 
-        // Get all parts related to this process
-        $clientParts = ClientPart::where('user_id', $process->user_id)->get();
+        // Fetch all parts related to the process (from client_parts table)
+        $clientParts = ClientPart::where('process_id', $process->id)->with('part')->get(); // Filter by process_id
 
-        // Transfer each part to history_parts
+        // Move the parts from client_parts to history_parts
         foreach ($clientParts as $clientPart) {
-            if ($clientPart->parts_id) { // Ensure parts_id is valid
+            if ($clientPart->parts_id) {
                 $historyPart = new HistoryPart();
-                $historyPart->history_car_id = $historyCar->id; // Foreign key from history_cars
+                $historyPart->history_car_id = $historyCar->id; // Foreign key to history_cars
                 $historyPart->part_id = $clientPart->parts_id;
                 $historyPart->part_name = $clientPart->part->name_parts ?? 'N/A';
                 $historyPart->part_price = $clientPart->part->price ?? 0;
-                $historyPart->user_id = $process->user_id; // Set user_id for the history part
+                $historyPart->user_id = $process->user_id; // Set user_id for history_part
                 $historyPart->save();
             }
         }
 
-        // Delete the client parts after transferring them to history
-        ClientPart::where('user_id', $process->user_id)->delete();
+        // Remove client parts after transferring to history
+        ClientPart::where('process_id', $process->id)->delete(); // Use process_id to delete only relevant parts
 
-        // Mark the process as done by deleting from the processes table
+        // Mark the process as done by deleting it
         $process->delete();
 
         return redirect()->back()->with('success', 'Process and parts have been marked as done and moved to history.');
     }
 
+    // Upload a proof of payment
     public function uploadProof(Request $request, $id)
     {
         $request->validate([
             'proof_payment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
         ]);
-    
+
         $process = Process::findOrFail($id);
-    
+
         if ($request->hasFile('proof_payment')) {
+            // Upload the file and store it in 'uploads/proofs'
             $imageName = time().'.'.$request->proof_payment->extension();
-            $request->proof_payment->move(public_path('uploads/proofs'), $imageName); // Adjust path as necessary
-    
-            $process->proof_payment = $imageName; // Save image path in the proof_payment column
+            $request->proof_payment->move(public_path('uploads/proofs'), $imageName);
+
+            // Save the file path in the proof_payment column
+            $process->proof_payment = $imageName;
             $process->save();
         }
-    
+
         return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
     }
 }
