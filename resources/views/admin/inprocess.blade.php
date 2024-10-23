@@ -69,10 +69,9 @@
         </nav>
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="#" class="brand-link">
-                <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="{{ url('/') }}" class="brand-link">
+                <img src="{{ asset('dist/img/autoservbg.png') }}" alt="AUTOSERV Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">AUTOSERV</span>
             </a>
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -136,6 +135,7 @@
                                 <p>View History</p>
                             </a>
                         </li>
+
                     </ul>
                 </nav>
             </div>
@@ -349,10 +349,11 @@
         </div>
         <!-- Footer -->
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-inline">
-                Anything you want
+            <strong>Copyright &copy; 2022-2024 <a href="https://github.com/maze272003/autoservs1.git">AUTOSERV</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> v1
             </div>
-            <strong>Copyright &copy; 2023 <a href="#">AdminLTE</a>.</strong> All rights reserved.
         </footer>
     </div>
     <!-- jQuery -->
