@@ -1,2 +1,0 @@
-<img src="<?php echo e(asset('dist/img/autoservbg.png')); ?>" alt="Profile Image" <?php echo e($attributes); ?>>
-<?php /**PATH /Users/mac/Documents/3rdyr/LARAVEL2/laravel from git/autoservs1 2/resources/views/components/application-logo.blade.php ENDPATH**/ ?>

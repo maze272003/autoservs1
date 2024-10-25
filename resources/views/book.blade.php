@@ -164,7 +164,7 @@
                         </li>
                         <!-- BOOK -->
                         <li class="nav-item">
-                            <a href="{{ route('book') }}" class="nav-link">
+                            <a href="{{ route('book') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-book"></i>
                                 <p>Books Car</p>
                             </a>

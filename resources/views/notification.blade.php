@@ -184,7 +184,7 @@
                         </li>
                         <!-- PROFILE -->
                         <li class="nav-item">
-                            <a href="{{ route('messages.notification') }}" class="nav-link">
+                            <a href="{{ route('messages.notification') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
                             </a>

@@ -110,7 +110,7 @@
                         </li>
                         <!-- history -->
                         <li class="nav-item">
-                            <a href="{{ route('maintenance') }}" class="nav-link">
+                            <a href="{{ route('maintenance') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <p>Maintenance History</p>
                             </a>

@@ -84,7 +84,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('user.statistics') }}" class="nav-link">
+                            <a href="{{ route('user.statistics') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Charts
@@ -128,6 +128,12 @@
                             <a href="{{ route('admin.history.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
                                 <p>View History</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.response.messages') }}" class="nav-link ">
+                                <i class="nav-icon fas fa-envelope"></i> <!-- Changed icon to envelope -->
+                                <p>View Messages</p> <!-- Updated text to reflect the view -->
                             </a>
                         </li>
                     </ul>

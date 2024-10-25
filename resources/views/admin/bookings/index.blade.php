@@ -108,7 +108,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.bookings.index') }}" class="nav-link">
+                            <a href="{{ route('admin.bookings.index') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-car"></i>
                                 <p>
                                     Process car
@@ -128,6 +128,12 @@
                             <a href="{{ route('admin.history.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
                                 <p>View History</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.response.messages') }}" class="nav-link ">
+                                <i class="nav-icon fas fa-envelope"></i> <!-- Changed icon to envelope -->
+                                <p>View Messages</p> <!-- Updated text to reflect the view -->
                             </a>
                         </li>
                     </ul>

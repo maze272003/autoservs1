@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Message; // Make sure this points to your Message model
+use App\Models\Message; 
+use App\Models\Reply; 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // Add this line
+use Illuminate\Support\Facades\Log; 
+
 class MessageController extends Controller
 {
     // Show the support form
@@ -23,24 +25,37 @@ class MessageController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Create a new message
+        // Create a new message with the user_id
         Message::create([
             'email' => $validated['email'],
             'message' => $validated['message'],
+            'user_id' => Auth::id(), // Store the authenticated user's ID
         ]);
 
         // Redirect back with a success message
         return redirect()->route('customer.support')->with('success', 'Message sent successfully!');
     }
 
+    // Fetch notifications for the current user
     public function showNotifications()
     {
-        // Kunin ang mga mensahe mula sa kasalukuyang user
+        // Fetch messages for the current user
         $messages = Message::where('email', Auth::user()->email)->get();
+        
+        // Count unread messages and mark them as read
+        $unreadCount = Message::where('email', Auth::user()->email)
+                              ->where('read', false)
+                              ->count();
+        
+        // Mark messages as read (optional)
+        Message::where('email', Auth::user()->email)
+               ->where('read', false)
+               ->update(['read' => true]);
 
-        return view('messages.notification', compact('messages'));
+        return view('messages.notification', compact('messages', 'unreadCount'));
     }
 
+    // Delete selected messages
     public function deleteMessages(Request $request)
     {
         // Log the incoming request data
@@ -58,4 +73,17 @@ class MessageController extends Controller
         // Return a JSON response indicating success
         return response()->json(['success' => true]);
     }
+
+    // Show all messages for the authenticated user with replies
+    public function showMessages()
+    {
+        // Fetch messages that belong to the authenticated user
+        $messages = Message::where('user_id', Auth::id())->with('replies')->get();
+    
+        return view('messages.notification', compact('messages')); // Ensure you're passing 'messages' to the view
+    }
+
+    // Count unread messages for the dashboard
+    
+
 }

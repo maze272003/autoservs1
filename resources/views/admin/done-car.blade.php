@@ -130,6 +130,12 @@
                                 <p>View History</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.response.messages') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-envelope"></i> <!-- Changed icon to envelope -->
+                                <p>View Messages</p> <!-- Updated text to reflect the view -->
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

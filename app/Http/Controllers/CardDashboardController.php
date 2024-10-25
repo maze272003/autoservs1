@@ -15,15 +15,17 @@ class CardDashboardController extends Controller
         // Get authenticated user's ID
         $userId = Auth::id();
 
-        // Count all added parts for the authenticated user
-        $addedPartsCount = ClientPart::where('user_id', $userId)->count();
+        // Count all added parts specifically for the authenticated user using processes table
+        $userAddedPartsCount = ClientPart::whereHas('process', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->count();
 
         // Fetch bookings for the authenticated user
         $bookings = Booking::where('user_id', $userId)->get();
         $bookingCount = $bookings->count();
 
         // Pass the variables to the view
-        return view('dashboard', compact('bookings', 'bookingCount', 'addedPartsCount'));
+        return view('dashboard', compact('bookings', 'bookingCount', 'userAddedPartsCount'));
     }
 
     public function showDashboard()
@@ -31,8 +33,10 @@ class CardDashboardController extends Controller
         // Get authenticated user's ID
         $userId = Auth::id();
 
-        // Count all added parts for the authenticated user
-        $addedPartsCount = ClientPart::where('user_id', $userId)->count();
+        // Count added parts specifically for the authenticated user using processes table
+        $userAddedPartsCount = ClientPart::whereHas('process', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->count();
 
         // Fetch all bookings for the authenticated user
         $bookings = Booking::where('user_id', $userId)->get();
@@ -54,6 +58,15 @@ class CardDashboardController extends Controller
             ->get();
 
         // Pass all relevant data to the view
-        return view('dashboard', compact('addedPartsCount', 'bookings', 'bookingCount', 'canceledBookings', 'canceledCount', 'processes', 'processCount', 'pendingBookings'));
+        return view('dashboard', compact(
+            'userAddedPartsCount',
+            'bookings', 
+            'bookingCount', 
+            'canceledBookings', 
+            'canceledCount', 
+            'processes', 
+            'processCount', 
+            'pendingBookings'
+        ));
     }
 }

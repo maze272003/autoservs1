@@ -206,7 +206,7 @@
         height: 2.8em;
         padding-right: 3em;
         left: 46%;
-        bottom: 530px;
+        bottom: 580px;
     }
 
     .iconButton {
@@ -512,11 +512,9 @@
     <!-- Image Section -->
     <div class="home" id="home">
         <div class="image-container">
-            <img src="{{ asset('dist/img/Car-Service.jpg') }}" alt="Car-Service">
+            <img src="{{ asset('dist/img/automotive1.webp') }}" alt="Car-Service">
 
-            <div class="text-overlay">Professional Car Repair Services
-                <p>Expert diagnosis and maintenance to keep your vehicle running smoothly.</p>
-            </div>
+            
         </div>
     </div>
 

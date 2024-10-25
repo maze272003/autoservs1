@@ -189,13 +189,17 @@
                                 <p>Maintenance History</p>
                             </a>
                         </li>
-                        <!-- PROFILE -->
+                        <!-- NOTIFICATION -->
                         <li class="nav-item">
-                            <a href="{{ route('messages.notification') }}" class="nav-link">
+                            <a href="{{ route('messages.notification') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
+                                @if($unreadCount > 0)
+                                    <span class="badge badge-danger right">{{ $unreadCount }}</span>
+                                @endif
                             </a>
                         </li>
+                        
                         
                         <!-- payment -->
                         <li class="nav-item">
@@ -273,7 +277,37 @@
                                                 <td class="mailbox-name">{{ $message->email }}</td>
                                                 <td class="mailbox-subject">{{ $message->message }}</td>
                                                 <td class="mailbox-date" data-created-at="{{ $message->created_at }}">{{ $message->created_at->diffForHumans() }}</td>
+                                                <td>
+                                                    <!-- Link to open modal -->
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#repliesModal{{ $message->id }}">View Replies</button>
+                                                </td>
                                             </tr>
+            
+                                            <!-- Modal for Replies -->
+                                            <div class="modal fade" id="repliesModal{{ $message->id }}" tabindex="-1" role="dialog" aria-labelledby="repliesModalLabel{{ $message->id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="repliesModalLabel{{ $message->id }}">Replies for {{ $message->email }}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @if($message->replies->count() > 0)
+                                                                <ul class="list-group">
+                                                                    @foreach($message->replies as $reply)
+                                                                        <li class="list-group-item">{{ $reply->reply }} (by {{ $reply->user->name }})</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @else
+                                                                <p>No replies yet.</p>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -282,6 +316,7 @@
                     </div>
                 </div>
             </section>
+            
             
             <!-- /.content -->
         </div>
@@ -482,6 +517,27 @@
                             });
                         }
                     });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.view-replies', function() {
+            var messageId = $(this).data('id');
+    
+            // Fetch replies using AJAX
+            $.ajax({
+                url: '/client/messages/' + messageId + '/replies', // Adjust the URL as needed
+                method: 'GET',
+                success: function(data) {
+                    $('#repliesList').empty(); // Clear previous replies
+                    data.replies.forEach(function(reply) {
+                        $('#repliesList').append('<li class="list-group-item">' + reply.message + ' <small class="text-muted">' + reply.created_at + '</small></li>');
+                    });
+                    $('#repliesModal').modal('show'); // Show the modal
+                },
+                error: function() {
+                    alert('Unable to fetch replies.');
                 }
             });
         });

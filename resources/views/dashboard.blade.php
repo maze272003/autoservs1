@@ -159,7 +159,7 @@
                         data-accordion="false">
                         <!-- dashboard -->
                         <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link">
+                            <a href="{{ route('dashboard') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -180,13 +180,14 @@
                                 <p>Maintenance History</p>
                             </a>
                         </li>
-                        <!-- PROFILE -->
+                        <!-- NOTIFICATION -->
                         <li class="nav-item">
                             <a href="{{ route('messages.notification') }}" class="nav-link">
                                 <i class="nav-icon fas fa-bell"></i>
                                 <p>Notification</p>
                             </a>
                         </li>
+                        
                         
                         <!-- payment -->
                         <li class="nav-item">
@@ -236,7 +237,7 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>{{ $addedPartsCount }}</h3> <!-- Display count of added parts -->
+                                <h3>{{ $userAddedPartsCount }}</h3> <!-- Display count of added parts -->
                                 <p>ADDED PARTS</p>
                             </div>
                             <div class="icon">
@@ -279,7 +280,7 @@
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <strong>{{ $clientPart->part->name_parts ?? 'N/A' }}</strong> -
-                                                        ${{ $clientPart->part->price ?? 'N/A' }}
+                                                        ₱{{ $clientPart->part->price ?? 'N/A' }}
                                                     </div>
                                                     <form action="{{ route('parts.decline', $clientPart->id) }}" method="POST" class="ml-2 decline-part-form">
                                                         @csrf
@@ -297,7 +298,7 @@
                                             @endforelse
                                         </ul>
                                         @if ($totalPrice > 0)
-                                            <h5>Total Price: ${{ $totalPrice }}</h5> <!-- Display total price -->
+                                            <h5>Total Price: ₱{{ $totalPrice }}</h5> <!-- Display total price -->
                                         @endif
                                     @endforeach
                                 </div>

@@ -200,7 +200,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('customer.support') }}" class="nav-link"
+                            <a href="{{ route('customer.support') }}" class="nav-link active"
                                 aria-label="Contact Customer Support">
                                 <i class="nav-icon fas fa-headset"></i>
                                 <p>Customer Support</p>
@@ -237,13 +237,12 @@
                             <h3 class="card-title">Contact Us</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('customer.support.store') }}" method="POST"
-                                onsubmit="showSuccessAlert(event)">
+                            <form action="{{ route('customer.support.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ Auth::user()->email }}" required>
+                                        value="{{ Auth::user()->email }}" required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="message">Message</label>
@@ -253,6 +252,7 @@
                             </form>
                         </div>
                     </div>
+                    
 
                     <div class="card">
                         <div class="card-header">

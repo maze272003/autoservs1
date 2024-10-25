@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CancelledBooking;
 use App\Models\Process;
-use App\Models\ClientPart; // Import ClientPart model
+use App\Models\Reply; // Add this line at the top of your BookingController
+
+use App\Models\Message; // Import the Message model
 
 class BookingController extends Controller
 {
@@ -19,39 +21,6 @@ class BookingController extends Controller
         // Pass the bookings variable to the view
         return view('admin.bookings.index', compact('bookings')); // Ensure 'bookings' is passed correctly
     }
-
-//   public function showDashboard()
-// {
-//     $userId = auth()->id();
-
-//     // Fetch all bookings for the authenticated user
-//     $bookings = Booking::where('user_id', $userId)->get();
-//     $bookingCount = $bookings->count();
-
-//     // Fetch all canceled bookings for the authenticated user
-//     $canceledBookings = CancelledBooking::where('user_id', $userId)->get();
-//     $canceledCount = $canceledBookings->count();
-
-//     // Fetch 'in process' bookings for the authenticated user
-//     $processes = Process::where('user_id', $userId)
-//         ->where('status', 'in process')
-//         ->get();
-//     $processCount = $processes->count();
-
-//     // Fetch 'pending' bookings for the authenticated user
-//     $pendingBookings = Booking::where('user_id', $userId)
-//         ->where('status', 'pending')
-//         ->get();
-
-//     // Count added parts for the authenticated user
-//     $addedPartsCount = ClientPart::where('user_id', $userId)->count();
-
-//     // Fetch added parts for modal display (optional)
-//     $clientParts = ClientPart::where('user_id', $userId)->with('part')->get();
-
-//     // Pass all relevant data to the view
-//     return view('dashboard', compact('bookings', 'bookingCount', 'canceledBookings', 'canceledCount', 'processes', 'processCount', 'pendingBookings', 'addedPartsCount', 'clientParts'));
-// }
 
     public function store(Request $request)
     {
@@ -128,4 +97,22 @@ class BookingController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Booking updated successfully.');
     }
+
+    public function showNotificationsDash()
+    {
+        // Count unread messages
+        $unreadCount = Message::where('email', Auth::user()->email)
+                              ->where('read', false)
+                              ->count();
+
+        return view('dashboard.index', compact('unreadCount')); // Adjust the view name accordingly
+    }
+    // In your controller
+public function someMethod()
+{
+    $unreadCount = Reply::where('user_id', Auth::id())->where('read', false)->count();
+    
+    return view('dashboard', compact('unreadCount'));
+}
+
 }

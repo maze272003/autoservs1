@@ -261,7 +261,7 @@
                         
                         <!-- payment -->
                         <li class="nav-item">
-                            <a href="{{ route('payment.show') }}" class="nav-link">
+                            <a href="{{ route('payment.show') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-credit-card"></i>
                                 <p>Payment</p>
                             </a>
@@ -320,7 +320,7 @@
                                         @foreach($processes as $process)
                                             <tr>
                                                 <td>{{ $process->serviceType }}</td>
-                                                <td>${{ number_format($process->totalPrice, 2) }}</td>
+                                                <td>₱{{ number_format($process->totalPrice, 2) }}</td>
                                                 <td>{{ $process->status }}</td>
                                                 <td>
                                                     <button class="btn btn-primary" data-toggle="modal" data-target="#viewPartsModal-{{ $process->id }}">
@@ -348,7 +348,7 @@
                                                             <!-- Add logic here to display the added parts -->
                                                             <ul>
                                                                 @foreach($process->clientParts as $clientPart) <!-- Assuming you have a relationship defined -->
-                                                                    <li>{{ $clientPart->part->name_parts }} - ${{ number_format($clientPart->part->price, 2) }}</li>
+                                                                    <li>{{ $clientPart->part->name_parts }} - ₱{{ number_format($clientPart->part->price, 2) }}</li>
                                                                 @endforeach
                                                             </ul>
                                                         </div>

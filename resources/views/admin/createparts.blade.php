@@ -89,7 +89,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.createparts') }}" class="nav-link">
+                            <a href="{{ route('admin.createparts') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-check"></i>
                                 <p>
                                     Add new parts
@@ -183,138 +183,114 @@
                                     <h2>All Parts</h2>
                                 </div>
                                 <div class="card-body">
-                                    <!-- Search Form -->
-                                    <div class="mb-3">
-                                        <input type="text" id="searchInput" class="form-control"
-                                            placeholder="Search by part name" onkeyup="searchParts()">
-                                    </div>
+                                    <!-- Search Input -->
+                                <div class="form-group">
+                                    <input type="text" id="searchInput" class="form-control" onkeyup="searchParts()" placeholder="Search for part names...">
+                                </div>
 
-                                    <table class="table table-striped" id="partsTable">
-                                        <thead>
-                                            <tr>
-
-                                                <th>Part Name</th>
-                                                <th>Price</th>
-                                                <th>Quantity</th>
-                                                <th>Created At</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($parts as $part)
+                                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                        <table class="table table-striped" id="partsTable">
+                                            <thead>
                                                 <tr>
-
-                                                    <td>{{ $part->name_parts }}</td>
-                                                    <td>${{ number_format($part->price, 2) }}</td>
-                                                    <td>{{ $part->quantity }}</td>
-                                                    <td>{{ $part->created_at->format('Y-m-d H:i:s') }}</td>
-                                                    <td>
-                                                        <!-- Edit Button -->
-                                                        <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                                            data-target="#editModal-{{ $part->id }}">Edit</button>
-
-                                                        <!-- Delete Button -->
-                                                        <button class="btn btn-danger btn-sm" data-toggle="modal"
-                                                            data-target="#deleteModal-{{ $part->id }}">Delete</button>
-
-                                                        <!-- Edit Modal -->
-                                                        <div class="modal fade" id="editModal-{{ $part->id }}"
-                                                            tabindex="-1" role="dialog"
-                                                            aria-labelledby="editModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <form
-                                                                        action="{{ route('parts.update', $part->id) }}"
-                                                                        method="POST">
-                                                                        @csrf
-                                                                        @method('PUT')
+                                                    <th>Part Name</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                    <th>Created At</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($parts as $part)
+                                                    <tr>
+                                                        <td>{{ $part->name_parts }}</td>
+                                                        <td>₱{{ number_format($part->price, 2) }}</td>
+                                                        <td>{{ $part->quantity }}</td>
+                                                        <td>{{ $part->created_at->format('Y-m-d H:i:s') }}</td>
+                                                        <td>
+                                                            <!-- Edit Button -->
+                                                            <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                                data-target="#editModal-{{ $part->id }}">Edit</button>
+                                    
+                                                            <!-- Delete Button -->
+                                                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                                data-target="#deleteModal-{{ $part->id }}">Delete</button>
+                                    
+                                                            <!-- Edit Modal -->
+                                                            <div class="modal fade" id="editModal-{{ $part->id }}" tabindex="-1" role="dialog"
+                                                                aria-labelledby="editModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <form action="{{ route('parts.update', $part->id) }}" method="POST">
+                                                                            @csrf
+                                                                            @method('PUT')
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="editModalLabel">Edit Part</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    <label for="name_parts">Part Name:</label>
+                                                                                    <input type="text" class="form-control" id="name_parts"
+                                                                                        name="name_parts" value="{{ $part->name_parts }}" required>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="price">Price:</label>
+                                                                                    <input type="number" step="0.01" class="form-control" id="price"
+                                                                                        name="price" value="{{ $part->price }}" required>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="quantity">Quantity:</label>
+                                                                                    <input type="number" class="form-control" id="quantity"
+                                                                                        name="quantity" value="{{ $part->quantity }}" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Update Part</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                    
+                                                            <!-- Delete Modal -->
+                                                            <div class="modal fade" id="deleteModal-{{ $part->id }}" tabindex="-1" role="dialog"
+                                                                aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title"
-                                                                                id="editModalLabel">Edit Part</h5>
-                                                                            <button type="button" class="close"
-                                                                                data-dismiss="modal"
+                                                                            <h5 class="modal-title" id="deleteModalLabel">Delete Part</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal"
                                                                                 aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <div class="form-group">
-                                                                                <label for="name_parts">Part
-                                                                                    Name:</label>
-                                                                                <input type="text"
-                                                                                    class="form-control"
-                                                                                    id="name_parts" name="name_parts"
-                                                                                    value="{{ $part->name_parts }}"
-                                                                                    required>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="price">Price:</label>
-                                                                                <input type="number" step="0.01"
-                                                                                    class="form-control"
-                                                                                    id="price" name="price"
-                                                                                    value="{{ $part->price }}"
-                                                                                    required>
-                                                                            </div>
-                                                                            <div class="form-group">
-                                                                                <label for="quantity">Quantity:</label>
-                                                                                <input type="number"
-                                                                                    class="form-control"
-                                                                                    id="quantity" name="quantity"
-                                                                                    value="{{ $part->quantity }}"
-                                                                                    required>
-                                                                            </div>
+                                                                            Are you sure you want to delete this part?
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary"
-                                                                                data-dismiss="modal">Close</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-primary">Update
-                                                                                Part</button>
+                                                                            <form action="{{ route('parts.destroy', $part->id) }}" method="POST"
+                                                                                class="d-inline">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                                            </form>
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                                         </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Delete Modal -->
-                                                        <div class="modal fade" id="deleteModal-{{ $part->id }}"
-                                                            tabindex="-1" role="dialog"
-                                                            aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="deleteModalLabel">
-                                                                            Delete Part</h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure you want to delete this part?
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <form
-                                                                            action="{{ route('parts.destroy', $part->id) }}"
-                                                                            method="POST" class="d-inline">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger">Delete</button>
-                                                                        </form>
-                                                                        <button type="button"
-                                                                            class="btn btn-secondary"
-                                                                            data-dismiss="modal">Close</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
                                 </div>
 
                             </div>
@@ -344,6 +320,7 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 </body>
+<!-- Search Script -->
 <script>
     function searchParts() {
         // Get the value of the search input
@@ -354,7 +331,7 @@
 
         // Loop through all table rows (except the first, which is the header)
         for (let i = 1; i < tr.length; i++) {
-            const td = tr[i].getElementsByTagName('td')[1]; // Get the Part Name column
+            const td = tr[i].getElementsByTagName('td')[0]; // Get the Part Name column (index 0)
             if (td) {
                 const txtValue = td.textContent || td.innerText;
                 // Display the row if it matches the search input
