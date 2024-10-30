@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <!-- Email Verification Section -->
+                            <!-- Email Verification Section -->
                 <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
                 </div>
@@ -95,10 +95,10 @@
                 @endif
 
                 <div class="mt-4 flex items-center justify-between">
-                    <form method="POST" action="{{ route('verification.send') }}">
+                    <form method="POST" action="{{ route('verification.send') }}" id="resendVerificationForm">
                         @csrf
                         <div>
-                            <x-primary-button>
+                            <x-primary-button id="resendVerificationButton">
                                 {{ __('Resend Verification Email') }}
                             </x-primary-button>
                         </div>
@@ -165,6 +165,51 @@
             }
         </script>
     </body>
+        <!-- Include SweetAlert library -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        <script>
+            document.getElementById('resendVerificationButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Submit the form via AJAX
+                fetch("{{ route('verification.send') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        // Show SweetAlert notification in the top-right corner
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Verification email sent!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    } else {
+                        // Handle error if needed
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Failed to resend email.',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'An error occurred. Try again later.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                });
+            });
+        </script>
     </html>
 </x-app-layout>

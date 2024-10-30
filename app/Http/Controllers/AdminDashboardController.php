@@ -3,19 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class AdminDashboardController extends Controller
 {
     public function showUserStatistics()
-    {
-        $usersPerMonth = DB::table('users')
-            ->select(DB::raw('COUNT(*) as count'), DB::raw('MONTH(created_at) as month'))
-            ->groupBy(DB::raw('MONTH(created_at)'))
-            ->get();
+{
+    $usersPerMonth = DB::table('users')
+        ->select(DB::raw('COUNT(*) as count'), DB::raw('MONTH(created_at) as month'))
+        ->groupBy(DB::raw('MONTH(created_at)'))
+        ->get();
 
-        return view('admin.userStatistics', ['usersPerMonth' => $usersPerMonth]);
-    }
+    $bookings = Booking::with('user')->get(); // Assumes relationships and models are set up
+
+    return view('admin.userStatistics', compact('usersPerMonth', 'bookings'));
+}
+
     public function showUsers()
     {
         try {

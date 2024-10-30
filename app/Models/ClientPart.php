@@ -29,4 +29,9 @@ class ClientPart extends Model
     {
         return $this->belongsTo(Process::class, 'process_id');
     }
+    public function parts()
+{
+    return $this->belongsTo(Part::class, 'parts_id'); // Adjust if the foreign key differs
+}
+
 }

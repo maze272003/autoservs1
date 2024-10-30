@@ -583,8 +583,8 @@
             Whether you're looking for expert advice or need urgent assistance, we are here to help with a smile.</p>
         <p>Thank you for choosing Autoserve. We look forward to serving you and ensuring your complete satisfaction.</p>
         <div class="images">
-            <img src="{{ asset('dist/img/repair.jpg') }}" alt="repair">
-            <img src="{{ asset('dist/img/repair.jpg') }}" alt="repair">
+            <img src="{{ asset('dist/img/CarRepairContent.webp') }}" alt="repair">
+            <img src="{{ asset('dist/img/CarRepairContent1.webp') }}" alt="repair">
             <img src="{{ asset('dist/img/repair.jpg') }}" alt="repair">
         </div>
     </div>

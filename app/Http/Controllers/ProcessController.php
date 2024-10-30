@@ -120,4 +120,16 @@ class ProcessController extends Controller
 
         return redirect()->back()->with('success', 'Payment proof uploaded successfully!');
     }
+    public function deletePart($processId, $partId)
+{
+    // Find and delete the ClientPart record
+    $clientPart = ClientPart::where('process_id', $processId)->where('id', $partId)->first();
+    if ($clientPart) {
+        $clientPart->delete();
+        return response()->json(['success' => true]);
+    }
+    return response()->json(['success' => false], 404);
+}
+
+
 }

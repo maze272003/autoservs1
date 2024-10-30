@@ -23,23 +23,19 @@ class HistoryCar extends Model
 
     /**
      * Define the relationship with HistoryPart (one-to-many).
-     * This means a single HistoryCar can have multiple HistoryParts.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * A single HistoryCar can have multiple HistoryParts.
      */
     public function historyParts()
     {
-        return $this->hasMany(HistoryPart::class, 'history_car_id'); // Ensure 'history_car_id' exists in your HistoryPart table
+        return $this->hasMany(HistoryPart::class, 'history_car_id');
     }
 
     /**
      * Define the relationship with User (belongs to).
-     * This means a HistoryCar belongs to a single User.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * A HistoryCar belongs to a single User.
      */
     public function user()
     {
-        return $this->belongsTo(User::class); // Adjust the relationship as necessary
+        return $this->belongsTo(User::class);
     }
 }

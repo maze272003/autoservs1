@@ -163,119 +163,116 @@
             </section>
 
             <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <!-- Search input -->
-                                    <div class="mb-3">
-                                        <input type="text" id="searchInput" class="form-control"
-                                            placeholder="Search for Car Owner, Car Model, Service Type, etc..."
-                                            onkeyup="searchFilter()">
-                                    </div>
-
-                                    <div class="table-responsive p-0">
-                                        <table class="table table-bordered" id="historyTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Car Owner</th>
-                                                    <th>Car Model</th>
-                                                    <th>Service Type</th>
-                                                    <th>Car Issue</th>
-                                                    <th>Appointment Date</th>
-                                                    <th>Plate Number</th>
-                                                    <th>Additional Notes</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($historyCars as $car)
-                                                    <tr>
-                                                        <td>{{ $car->user->name ?? 'N/A' }}</td>
-                                                        <!-- Move car owner's name to this column -->
-                                                        <td>{{ $car->carModel }}</td>
-                                                        <td>{{ $car->serviceType }}</td>
-                                                        <td>{{ $car->carIssue }}</td>
-                                                        <td>{{ $car->appointmentDate }}</td>
-                                                        <td>{{ $car->plateNumber }}</td>
-                                                        <td>{{ $car->additionalNotes }}</td>
-                                                        <td>
-                                                            <!-- Button trigger modal -->
-                                                            <button type="button" class="btn btn-primary btn-sm"
-                                                                data-toggle="modal"
-                                                                data-target="#viewPartsModal{{ $car->id }}">
-                                                                View Parts
-                                                            </button>
-                                                            <!-- Modal -->
-                                                            <div class="modal fade"
-                                                                id="viewPartsModal{{ $car->id }}" tabindex="-1"
-                                                                role="dialog"
-                                                                aria-labelledby="viewPartsModalLabel{{ $car->id }}"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title"
-                                                                                id="viewPartsModalLabel{{ $car->id }}">
-                                                                                Parts for {{ $car->carModel }}
-                                                                            </h5>
-                                                                            <button type="button" class="close"
-                                                                                data-dismiss="modal"
-                                                                                aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <table class="table table-bordered">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>Part Name</th>
-                                                                                        <th>Part Price</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    @if ($car->historyParts->isNotEmpty())
-                                                                                        @foreach ($car->historyParts as $part)
-                                                                                            <tr>
-                                                                                                <td>{{ $part->part_name }}
-                                                                                                </td>
-                                                                                                <td>{{ $part->part_price }}
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                        @endforeach
-                                                                                    @else
-                                                                                        <tr>
-                                                                                            <td colspan="2">No parts
-                                                                                                added</td>
-                                                                                        </tr>
-                                                                                    @endif
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary"
-                                                                                data-dismiss="modal">Close</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- /.card -->
-                            </div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Search input -->
+                        <div class="mb-3">
+                            <input type="text" id="searchInput" class="form-control"
+                                placeholder="Search for Car Owner, Car Model, Service Type, etc..."
+                                onkeyup="searchFilter()">
                         </div>
-                        <!-- /.row -->
+
+                        <div class="table-responsive p-0">
+                            <table class="table table-bordered" id="historyTable">
+                                <thead>
+                                    <tr>
+                                        <th>Car Owner</th>
+                                        <th>Car Model</th>
+                                        <th>Service Type</th>
+                                        <th>Car Issue</th>
+                                        <th>Appointment Date</th>
+                                        <th>Plate Number</th>
+                                        <th>Additional Notes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($historyCars as $car)
+                                        <tr>
+                                            <td>{{ $car->user->name ?? 'N/A' }}</td>
+                                            <td>{{ $car->carModel }}</td>
+                                            <td>{{ $car->serviceType }}</td>
+                                            <td>{{ $car->carIssue }}</td>
+                                            <td>{{ $car->appointmentDate }}</td>
+                                            <td>{{ $car->plateNumber }}</td>
+                                            <td>{{ $car->additionalNotes }}</td>
+                                            <td>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-primary btn-sm"
+                                                    data-toggle="modal"
+                                                    data-target="#viewPartsModal{{ $car->id }}">
+                                                    View Parts
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade"
+                                                    id="viewPartsModal{{ $car->id }}" tabindex="-1"
+                                                    role="dialog"
+                                                    aria-labelledby="viewPartsModalLabel{{ $car->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="viewPartsModalLabel{{ $car->id }}">
+                                                                    Parts for {{ $car->carModel }}
+                                                                </h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Scrollable modal body -->
+                                                            <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
+                                                                <table class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Part Name</th>
+                                                                            <th>Part Price</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @if ($car->historyParts->isNotEmpty())
+                                                                            @foreach ($car->historyParts as $part)
+                                                                                <tr>
+                                                                                    <td>{{ $part->part_name }}</td>
+                                                                                    <td>{{ $part->part_price }}</td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        @else
+                                                                            <tr>
+                                                                                <td colspan="2">No parts added</td>
+                                                                            </tr>
+                                                                        @endif
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <!-- /.container-fluid -->
-            </section>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+</section>
+
 
         </div>
         <!-- /.content-wrapper -->

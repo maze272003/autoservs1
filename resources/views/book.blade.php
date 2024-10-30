@@ -67,6 +67,16 @@
         color: white;
         cursor: pointer;
     }
+    /* Add a red border for invalid input */
+    /* Red border for invalid input */
+    .is-invalid {
+        border-color: red;
+    }
+
+    /* Green border for valid input */
+    .is-valid {
+        border-color: green;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -503,12 +513,15 @@
                     <input type="time" class="form-control" id="appointmentTime" name="appointmentTime" required>
                 </div>
 
-                <!-- Plate Number -->
-                <div class="col-md-4">
-                    <label for="plateNumber" class="form-label">Plate Number</label>
-                    <input type="text" class="form-control" id="plateNumber" name="plateNumber" required
-                        placeholder="XXX-000">
-                </div>
+               <!-- Plate Number -->
+<div class="col-md-4">
+    <label for="plateNumber" class="form-label">Plate Number</label>
+    <input type="text" class="form-control" id="plateNumber" name="plateNumber" required
+           placeholder="AAA-123" 
+           pattern="^[A-Z]{3}-\d{3,4}$"
+           title="Please enter a valid plate number (e.g., ABC-123 or ABC-1234)">
+    <small id="plateNumberError" class="text-danger d-none">Invalid plate number format.</small>
+</div>
 
                 <!-- Additional Notes -->
                 <div class="col-md-12">
@@ -618,5 +631,32 @@
         });
     }
 </script>
+<script>
+    // Get the current date in the format yyyy-mm-dd
+    const today = new Date().toISOString().split('T')[0];
+    // Set the min attribute to today's date
+    document.getElementById("appointmentDate").setAttribute("min", today);
+</script>
+<script>
+    document.getElementById('plateNumber').addEventListener('input', function () {
+        const plateInput = this;
+        const pattern = /^[A-Z]{3}-\d{3,4}$/;
+        const errorMessage = document.getElementById('plateNumberError');
+        const checkIcon = document.getElementById('checkIcon');
+    
+        // Check if the input matches the pattern
+        if (!pattern.test(plateInput.value)) {
+            plateInput.classList.add('is-invalid');
+            plateInput.classList.remove('is-valid');
+            errorMessage.classList.remove('d-none');
+            checkIcon.classList.add('d-none'); // Hide check icon on invalid input
+        } else {
+            plateInput.classList.add('is-valid');
+            plateInput.classList.remove('is-invalid');
+            errorMessage.classList.add('d-none');
+            checkIcon.classList.remove('d-none'); // Show check icon on valid input
+        }
+    });
+    </script>
 
 </html>
