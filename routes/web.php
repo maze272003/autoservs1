@@ -19,7 +19,7 @@ use App\Http\Controllers\{
     HistoryBookingController,
     ResponseMessageController
 };
-use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\StatisticsController; 
 
 // Public Routes
 // Display the client index page

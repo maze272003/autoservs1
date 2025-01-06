@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>client | maintenance history</title>
+    <title>{{ config('app.name', 'Laravel') }} | maintenance history</title> 
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -108,9 +108,9 @@
                                 <p>Books Car</p>
                             </a>
                         </li>
-                        <!-- history -->
-                        <li class="nav-item">
-                            <a href="{{ route('maintenance') }}" class="nav-link active">
+                       <!-- history -->
+                       <li class="nav-item">
+                            <a href="{{ route('ClientHistory.maintenanceHistory') }}" class="nav-link active">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <p>Maintenance History</p>
                             </a>
