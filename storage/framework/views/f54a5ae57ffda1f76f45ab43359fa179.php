@@ -1,0 +1,2 @@
+<img src="<?php echo e(asset('dist/img/autoservbg.png')); ?>" alt="Profile Image" <?php echo e($attributes); ?>>
+<?php /**PATH C:\Users\John Michael Jonatas\Documents\advanceprog\autoservs1\resources\views/components/application-logo.blade.php ENDPATH**/ ?>

@@ -233,7 +233,7 @@
         <section class="content">
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
-                <div class="row">
+                <div class="row" id="cards">
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-warning">
                             <div class="inner">
@@ -721,5 +721,66 @@
         });
     }
 </script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to update only the card statistics
+        function updateCardStats() {
+            // Get all the card elements we want to update
+            const statElements = {
+                'added-parts': document.querySelector('.bg-warning .inner h3'),
+                'pending-car': document.querySelector('.bg-info .inner h3'),
+                'canceled-book': document.querySelector('.bg-danger .inner h3'),
+                'in-process': document.querySelector('.bg-success .inner h3')
+            };
+    
+            // Create a new AJAX request
+            const xhr = new XMLHttpRequest();
+            
+            // Set up the request
+            xhr.open('GET', window.location.href, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            
+            // Handle the response
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    // Create a temporary DOM parser
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(this.responseText, 'text/html');
+                    
+                    // Update each stat element if found
+                    for (const [key, element] of Object.entries(statElements)) {
+                        if (element) {
+                            const newElement = doc.querySelector(`.${key.replace('-', ' ')} .inner h3`);
+                            if (newElement) {
+                                element.textContent = newElement.textContent;
+                            }
+                        }
+                    }
+                }
+            };
+            
+            // Send the request
+            xhr.send();
+        }
+        
+        // Call updateCardStats every 10 seconds (10000 milliseconds)
+        setInterval(updateCardStats, 10000);
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function updateCardStats() {
+                fetch('/api/card-stats')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.querySelector('.bg-warning .inner h3').textContent = data.added_parts;
+                        document.querySelector('.bg-info .inner h3').textContent = data.pending_car;
+                        document.querySelector('.bg-danger .inner h3').textContent = data.canceled_book;
+                        document.querySelector('.bg-success .inner h3').textContent = data.in_process;
+                    });
+            }
+            
+            setInterval(updateCardStats, 10000);
+        });
+        </script>
 </html>
