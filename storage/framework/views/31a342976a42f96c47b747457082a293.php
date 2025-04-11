@@ -787,7 +787,7 @@
                     });
             }
             
-            setInterval(updateCardStats, 10000);
+            setInterval(updateCardStats, 3000);
         });
         </script>
 </html>
